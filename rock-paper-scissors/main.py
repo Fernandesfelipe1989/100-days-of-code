@@ -61,7 +61,7 @@ def choose_winner(user: str, computer: str) -> str:
     return result
 
 
-def select_game_option(user: str) -> str:
+def play_game(user: str) -> str:
     computer_option = choice(options)
     game_winner = choose_winner(user, computer_option)
     return print_result_game(user, computer_option) + game_winner
@@ -69,4 +69,4 @@ def select_game_option(user: str) -> str:
 
 if __name__ == "__main__":
     user_option = input("What do you choose? Type rock, paper or scissors\n")
-    print(select_game_option(user_option))
+    print(play_game(user_option))
