@@ -11,7 +11,6 @@ def password_generator(letters: int, symbols: int, numbers: int) -> str:
     digits_password = choices(all_digits_choices, k=numbers)
     symbols_password = choices(all_symbols_choices, k=symbols)
     password = letters_password + digits_password + symbols_password
-    print(password)
     shuffle(password)
     return "".join(password)
 
