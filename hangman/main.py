@@ -1,10 +1,13 @@
-from utils import initialize_hangman
+from utils import initialize_hangman, stages
 
-USER_CHANGES = 5
+USER_CHANGES = len(stages)
 
 
-def initialize_game():
-    word = initialize_hangman()
+def initialize_game(test: bool = False):
+    word = 'test'
+    if not test:
+        word = initialize_hangman()
+    word = "teste"
     print(word)
     letter_in_word = []
     secret_letters = []
@@ -16,24 +19,25 @@ def initialize_game():
 
 
 if __name__ == "__main__":
-    letters, secret, left_secret_letters = initialize_game()
-    user_life = USER_CHANGES
 
-    while left_secret_letters > 0 and user_life > 0:
+    letters, secret, left_secret_letters = initialize_game(test=True)
+    user_left_life = USER_CHANGES - 1
+    used_letters = []
+
+    while "_" in secret and user_left_life > 0:
+        print(f"You've choose this letters: {used_letters}" if used_letters else "")
         print(" ".join(secret))
         user_guess = input("Guess a letter: \n").lower()
-        if user_guess in letters and not(user_guess in secret):
-            last_count_secret = left_secret_letters
+        used_letters.append(user_guess)
+        if user_guess in letters and not(used_letters in secret):
             for index, letter in enumerate(letters):
                 if letter == user_guess:
                     secret[index] = letter
-            left_secret_letters = secret.count("_")
-            print(f"Good job you guess found {last_count_secret - left_secret_letters} letters")
         else:
-            print(f"Wrong guess\nYou have remain changes {user_life}")
-            user_life -= 1
+            user_left_life -= 1
+            print(f"{stages[user_left_life]}")
     print('The word was:\n', "".join(letters))
-    print("You win!" if user_life > 0 else "GameOver")
+    print("You win!" if user_left_life > 0 else "GameOver")
 
 
 
