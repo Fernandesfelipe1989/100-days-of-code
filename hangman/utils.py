@@ -1,9 +1,19 @@
+from pathlib import Path, PurePosixPath
 from random import choice
 
-INPUT = 'words.txt'
-words = []
+INPUT = 'hangman/words.txt'
 
-stages = ['''
+LOGO = ''' 
+ _                                             
+| |                                            
+| |__   __ _ _ __   __ _ _ __ ___   __ _ _ __  
+| '_ \ / _` | '_ \ / _` | '_ ` _ \ / _` | '_ \ 
+| | | | (_| | | | | (_| | | | | | | (_| | | | |
+|_| |_|\__,_|_| |_|\__, |_| |_| |_|\__,_|_| |_|
+                    __/ |                      
+                   |___/    '''
+
+STAGES = ['''
   +---+
   |   |
   O   |
@@ -60,11 +70,11 @@ stages = ['''
 =========
 ''']
 
-# TODO: Necessary remove special character
-
 
 def initialize_hangman():
-    with open(INPUT, 'r') as input_document:
+    input_path = PurePosixPath(Path.cwd()).joinpath(INPUT)
+    words = []
+    with open(input_path, 'r', encoding='utf-8') as input_document:
         for word in input_document:
             words.append(word)
     return choice(words).replace("\n", "")
