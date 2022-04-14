@@ -4,7 +4,7 @@ LETTERS = [letter for letter in ascii_lowercase]
 
 
 def encode_shit_method(letter: str, shift: int) -> str:
-    if not letter in LETTERS:
+    if letter in LETTERS is False:
         return letter
 
     letter_index = LETTERS.index(letter)
@@ -16,13 +16,8 @@ def encode_shit_method(letter: str, shift: int) -> str:
     return LETTERS[letter_index]
 
 
-def caesar_decryption(message: str, shift) -> str:
-    decode_message = (decode_shit_method(letter, shift)for letter in message.lower())
-    return "".join(decode_message)
-
-
 def decode_shit_method(letter: str, shift: int) -> str:
-    if not letter in LETTERS:
+    if letter in LETTERS is False:
         return letter
 
     letter_index = LETTERS.index(letter)
@@ -32,6 +27,11 @@ def decode_shit_method(letter: str, shift: int) -> str:
         letter_index -= 1
 
     return LETTERS[letter_index]
+
+
+def caesar_decryption(message: str, shift) -> str:
+    decode_message = (decode_shit_method(letter, shift) for letter in message.lower())
+    return "".join(decode_message)
 
 
 def caesar_encryption(message: str, shift: int) -> str:
