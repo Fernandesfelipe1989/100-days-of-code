@@ -3,46 +3,35 @@ from string import ascii_lowercase
 LETTERS = [letter for letter in ascii_lowercase]
 
 
-def encode_shit_method(letter: str, shift: int) -> str:
-    if letter in LETTERS is False:
-        return letter
+def shit_method(letter: str, shift: int, action: str) -> str:
+    if letter in LETTERS:
+        letter_index = LETTERS.index(letter)
+        letter_index += shift if action == 'encode' else shift * -1
 
-    letter_index = LETTERS.index(letter)
-    letter_index += shift
+        if letter_index > len(LETTERS) - 1:
+            letter_index = letter_index - len(LETTERS) + 1
 
-    if letter_index > len(LETTERS) - 1:
-        letter_index = letter_index - len(LETTERS) + 1
+        if letter_index < 0:
+            letter_index -= 1
 
-    return LETTERS[letter_index]
+        return LETTERS[letter_index]
 
+    return letter
 
-def decode_shit_method(letter: str, shift: int) -> str:
-    if letter in LETTERS is False:
-        return letter
-
-    letter_index = LETTERS.index(letter)
-    letter_index -= shift
-
-    if letter_index < 0:
-        letter_index -= 1
-
-    return LETTERS[letter_index]
-
-
-def caesar_decryption(message: str, shift) -> str:
-    decode_message = (decode_shit_method(letter, shift) for letter in message.lower())
-    return "".join(decode_message)
-
-
-def caesar_encryption(message: str, shift: int) -> str:
-    encode_message = (encode_shit_method(letter, shift) for letter in message.lower())
-    return "".join(encode_message)
+   
+def caesar_cipher_process(message: str, shift: int, action: str) -> str:
+    result_message = (shit_method(letter, shift, action) for letter in message.lower())
+    return "".join(result_message)
 
 
 if __name__ == "__main__":
-    user_message = input("Type your message:\n")
+    direction = input("Type encode to encrypt, or decode to decrypt:\n").lower()
+    user_message = input("Type your message:\n").lower()
     shift_number = int(input("Type the shift number:\n"))
-    encode_message = caesar_encryption(user_message, shift_number)
-    print(caesar_encryption(user_message, shift_number))
-    decode = caesar_decryption(encode_message, shift_number)
-    print(decode)
+
+    if direction == 'encode':
+        print(f"The encoded text is {caesar_cipher_process(user_message, shift_number, 'encode')}")
+    elif direction == 'decode':
+        print(f"The decoded text is {caesar_cipher_process(user_message, shift_number, 'decode')}")
+    else:
+        print('Invalid option. So bye-bye')
