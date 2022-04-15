@@ -12,7 +12,7 @@ def shit_method(letter: str, shift: int, action: str) -> str:
     if not is_letter:
         return letter
 
-    if shift > MAX_SIZE:
+    if shift > MAX_SIZE or -MAX_SIZE > shift:
         shift = shift % MAX_SIZE
 
     letter_index = LETTERS.index(letter)
