@@ -30,6 +30,8 @@ if __name__ == "__main__":
             output_format = "{} {} {} = ".format(answer, select_operation, second_number)
             answer = math_operation(answer, second_number)
             print(f'{output_format}{answer}' if select_operation else INVALID_MESSAGE)
+            if type(answer) == str:
+                break
             continuous_calculate = input(f"Type yes to continue calculating {answer}, "
                                          f"or type n to start a new calculation:\n")
         run_process = input(f"Type yes to continue using the calculator, or type n exit:\n")
