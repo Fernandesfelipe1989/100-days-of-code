@@ -1,0 +1,3 @@
+LOGO = """
+A beautiful logo
+"""
