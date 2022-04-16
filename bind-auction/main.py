@@ -7,7 +7,7 @@ if __name__ == "__main__":
     print("Welcome to the secret auction program")
     auction = {}
     run_auction = 'yes'
-    
+
     while run_auction == 'yes':
         name = input("What's your name:\n")
         bid = int(input("What's your bid?: $"))
