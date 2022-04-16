@@ -11,9 +11,8 @@ if __name__ == "__main__":
         name = input("What's your name:\n")
         clear()
         bid = int(input("What's your bid?: $"))
-        auction[bid] = name
+        auction[name] = bid
         run_auction = input("Are there any other bidders? Type yes or no\n").lower()
-    bids = (bid for bid in auction.keys())
-    winner = max(bids)
-    print(f"The winner is {auction[winner]} a bid of ${winner}")
+    winner = max(auction, key=lambda x: auction[x])
+    print(f"The winner is {winner} a bid of ${auction[winner]}")
 
