@@ -1,5 +1,5 @@
-#Treasure Island
-##Instructions
+# Treasure Island
+## Instructions
 Make your own "Choose Your Own Adventure" game. Use conditionals such as if, else, and elif statements to lay out the logic and the story's path in your program.
 
 To write your code according to my story, you can use this flow chart from draw.io to help you.
