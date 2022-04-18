@@ -19,7 +19,7 @@ def initialize() -> int:
     return randint(MIN_NUMBER, MAX_NUMBER)
 
 
-if __name__ == "__main__":
+def game():
     run_again = 'yes'
     while run_again == 'yes':
         message = "You've run out of guesses, you lose"
@@ -46,6 +46,10 @@ if __name__ == "__main__":
             message = f"You go it! The answer was {secret_number}"
         print(message)
         run_again = input("Do you want to play again? Type yes or no:\n").lower()
+
+
+if __name__ == "__main__":
+    game()
 
 
 
