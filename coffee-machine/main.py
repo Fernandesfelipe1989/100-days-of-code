@@ -18,7 +18,7 @@ def check_resources(option, information, resources):
 
     enough_resources = enough_water and enough_milk and enough_coffee
     if not enough_resources:
-        print(f'Sorry there is not enough {",".join(not_enough)}')
+        print(f'Sorry there is not enough {", ".join(not_enough)}')
 
     else:
         successful_transaction, money = check_transaction(information)
