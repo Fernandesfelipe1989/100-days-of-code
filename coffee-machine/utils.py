@@ -1,3 +1,10 @@
+COINS_OPTIONS = {
+    'quarters': 0.23,
+    'dimes': 0.1,
+    'nickles': 0.05,
+    'pennies': 0.01,
+}
+
 MENU = {
     "espresso": {
         "ingredients": {
