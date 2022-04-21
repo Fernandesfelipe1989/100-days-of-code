@@ -85,6 +85,9 @@ def process_coins(price):
     for coin in COINS_OPTIONS:
         number_of_coins = int(input(f"How many {coin}?:\n"))
         money += number_of_coins * COINS_OPTIONS[coin]
+        print(f"Current money: {money:.2f}")
+        if money >= price:
+            break
     return money >= price, money
 # TODO 4 Check transaction:
 """
