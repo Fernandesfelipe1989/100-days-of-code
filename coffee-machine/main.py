@@ -141,17 +141,19 @@ def coffee_machine(resources, *args, **kwargs):
     if technical_option:
         return technical_option(resources)
 
-    selected_coffee_option = MENU.get(option, None)
-    enough_resources, not_enough = check_resources(selected_coffee_option.get('ingredients'), resources)
+    information_coffee = MENU.get(option, None)
+    enough_resources, not_enough = check_resources(information_coffee.get('ingredients'), resources)
     if not enough_resources:
         print(f"Sorry there is not enough {not_enough}")
 
-    successful_transaction, money = check_transaction(selected_coffee_option)
+    successful_transaction, money = check_transaction(information_coffee)
 
     if successful_transaction:
         resources['money'] += money
-        print(f"{resources['money']:.2f}\nMake coffee")
-
+        resources['water'] -= information_coffee.get('water', 0)
+        resources['coffee'] -= information_coffee.get('coffee', 0)
+        resources['milk'] -= information_coffee.get('milk', 0)
+        print(f"Here is your {option} ☕️. Enjoy!")
     return coffee_machine(resources)
 
 
@@ -159,4 +161,3 @@ if __name__ == "__main__":
     resources = initialize()
     coffee_machine(resources)
 
-    pass
