@@ -19,13 +19,14 @@ def check_resources(ingredients, resources):
 
 
 def check_transaction(coffee_option):
-    enough_coins, money = process_coins(coffee_option.get('cost'))
+    cost = coffee_option.get('cost')
+    enough_coins, money = process_coins(cost)
 
     if not enough_coins:
         print("Sorry that's not enough money. Money refunded")
         return False, money
 
-    print(f"Here is ${money:.2f} dollars in change.")
+    print(f"Here is ${money - cost:.2f} dollars in change.")
     return True, money
 
 
@@ -62,8 +63,6 @@ def process_coins(price):
         number_of_coins = int(input(f"How many {coin}?:\n"))
         money += number_of_coins * COINS_OPTIONS[coin]
         print(f"Current money: {money:.2f}")
-        if money >= price:
-            break
     return money >= price, money
 
 
