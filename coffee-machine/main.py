@@ -1,7 +1,8 @@
 from utils import COINS_OPTIONS, MENU, RESOURCES
 
 
-def check_resources(ingredients, resources):
+def check_resources(option, information, resources):
+    ingredients = information.get('ingredients')
     not_enough = []
 
     enough_water = ingredients.get('water', 0) <= resources.get('water')
@@ -15,7 +16,24 @@ def check_resources(ingredients, resources):
     if not enough_coffee:
         not_enough.append('Coffee')
 
-    return enough_water and enough_milk and enough_coffee, ",".join(not_enough)
+    enough_resources = enough_water and enough_milk and enough_coffee
+    if not enough_resources:
+        print(f'Sorry there is not enough {",".join(not_enough)}')
+
+    else:
+        successful_transaction, money = check_transaction(information)
+
+        if successful_transaction:
+            print(information)
+            print(resources)
+            resources['money'] += money
+            resources['water'] -= information.get('ingredients').get('water', 0)
+            resources['coffee'] -= information.get('ingredients').get('coffee', 0)
+            resources['milk'] -= information.get('ingredients').get('milk', 0)
+            print(f"Here is your {option} ☕️. Enjoy!")
+            print(resources)
+
+    return resources
 
 
 def check_transaction(coffee_option):
@@ -25,9 +43,9 @@ def check_transaction(coffee_option):
     if not enough_coins:
         print("Sorry that's not enough money. Money refunded")
         return False, money
-
-    print(f"Here is ${money - cost:.2f} dollars in change.")
-    return True, money
+    change = money - cost
+    print(f"Here is ${change:.2f} dollars in change.")
+    return True, cost
 
 
 def coffee_machine(resources, *args, **kwargs):
@@ -37,19 +55,8 @@ def coffee_machine(resources, *args, **kwargs):
         return technical_option(resources)
 
     information_coffee = MENU.get(option, None)
-    enough_resources, not_enough = check_resources(information_coffee.get('ingredients'), resources)
-    if not enough_resources:
-        print(f"Sorry there is not enough {not_enough}")
-
-    successful_transaction, money = check_transaction(information_coffee)
-
-    if successful_transaction:
-        resources['money'] += money
-        resources['water'] -= information_coffee.get('water', 0)
-        resources['coffee'] -= information_coffee.get('coffee', 0)
-        resources['milk'] -= information_coffee.get('milk', 0)
-        print(f"Here is your {option} ☕️. Enjoy!")
-    return coffee_machine(resources)
+    remain_resources = check_resources(option, information_coffee, resources)
+    return coffee_machine(remain_resources)
 
 
 def initialize():
@@ -67,7 +74,7 @@ def process_coins(price):
 
 
 def print_report(resources, *args):
-    print(f"Water: {resources['water']} ml\nMilk: {resources['milk']}ml")
+    print(f"Water: {resources['water']} ml\nMilk: {resources['milk']} ml")
     print(f"Coffee: {resources['coffee']} g \nMoney: ${resources['money']:.2f}")
     return coffee_machine(resources)
 
