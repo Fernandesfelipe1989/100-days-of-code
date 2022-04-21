@@ -24,15 +24,10 @@ def check_resources(option, information, resources):
         successful_transaction, money = check_transaction(information)
 
         if successful_transaction:
-            print(information)
-            print(resources)
             resources['money'] += money
             resources['water'] -= information.get('ingredients').get('water', 0)
             resources['coffee'] -= information.get('ingredients').get('coffee', 0)
             resources['milk'] -= information.get('ingredients').get('milk', 0)
-            print(f"Here is your {option} ☕️. Enjoy!")
-            print(resources)
-
     return resources
 
 
