@@ -11,6 +11,7 @@ if __name__ == "__main__":
         available_drink = menu.find_drink(option)
         if option == "report":
             coffee_machine.report()
+            money_machine.report()
         elif option == 'off':
             break
         elif available_drink:
