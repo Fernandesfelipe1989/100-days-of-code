@@ -5,13 +5,13 @@ class Question:
 
     def __init__(self, text: str, answer: str) -> None:
         self.text = text
-        self.answer = answer
+        self.answer = answer.lower()
 
     def __repr__(self):
         return self.text
 
     def correct_answer(self, answer: str) -> bool:
-        return answer == self.answer
+        return answer.lower() == self.answer
 
 
 QUESTION_BANK = [Question(text=question['text'], answer=question['answer']) for question in QUESTIONS_DATA]
