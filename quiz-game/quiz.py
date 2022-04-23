@@ -6,6 +6,7 @@ class Quiz:
     def __init__(self, questions):
         self.question_number = 0
         self.question_list = questions
+        self.user_score = 0
 
     def play_quiz(self):
         """Checking if we're the end of the quiz"""
@@ -23,12 +24,23 @@ class Quiz:
 
     def _check_current_answer(self, answer):
         """Checking if the answer was correct"""
-        return self.get_question().correct_answer(answer)
+        return self.get_question().correct_answer(answer) and self.add_score()
+
+    def add_score(self):
+        self.user_score += 1
+        return True
+
+    def show_result(self, user, question):
+        """Show the question result and the current user's score """
+        print("You got it right!" if self._check_current_answer(user) else "You wrong the answer")
+        print("The correct answer was:{}".format(question.answer))
+        print(f"Your current score is: {self.user_score}/{self.question_number + 1}")
 
     def ask_question(self):
         """Asking the questions"""
-        answer = input(f"Q{self.question_number + 1} : {self.get_question().text}: (True or False)\n")
-        result = self._check_current_answer(answer)
+        question = self.get_question()
+        answer = input(f"Q{self.question_number + 1} : {question.text}: (True or False)\n")
+        self.show_result(answer, question)
 
 
 quiz = Quiz(questions=QUESTION_BANK)
