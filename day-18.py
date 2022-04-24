@@ -1,6 +1,6 @@
 import random
 from random import choice
-from turtle import Turtle, Screen
+from turtle import Turtle, Screen, colormode
 
 with open("color.txt", 'r') as colors:
     COLOR = [color.lower().replace('\n', "").replace("\t", "") for color in colors]
@@ -63,8 +63,7 @@ class Jimmy(Turtle):
 
     def create_shapes(self):
         for shape in DRAW_SHAPE:
-            color = choice(COLOR)
-            self.color(color)
+            self.color(tuple(random.randint(0, 255) for _ in range(0, 3)))
             self.draw_shape(number_sides=shape.number_sides, size=shape.size, angle=shape.angle)
 
     def create_random_walk(self):
@@ -76,8 +75,7 @@ class Jimmy(Turtle):
         turn_options = [self.right, self.left]
 
         for _ in range(0, 1000):
-            color = choice(COLOR)
-            self.color(color)
+            self.color(tuple(random.randint(0, 255) for _ in range(0, 3)))
             move_action = choice(move_options)
             turn_action = choice(turn_options)
             move_action(20)
@@ -86,6 +84,7 @@ class Jimmy(Turtle):
 
 if __name__ == "__main__":
     timmy = Jimmy()
+    colormode(255)
     timmy.initialize('black', 'arrow')
     timmy.draw_dash_line(50, 10)
     timmy.reset()
