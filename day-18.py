@@ -83,7 +83,6 @@ class Jimmy(Turtle):
     def create_spirograph(self, size_gap):
         self.speed(0)
         self.shape('arrow')
-        # self.hideturtle()
         self.width(1)
         for current in range(int(360/size_gap)):
             self.color(self.create_rgb_colour())
@@ -94,13 +93,13 @@ class Jimmy(Turtle):
 if __name__ == "__main__":
     timmy = Jimmy()
     colormode(255)
-    # timmy.initialize('black', 'arrow')
-    # timmy.draw_dash_line(50, 10)
-    # timmy.reset()
-    # timmy.create_shapes()
-    # timmy.reset()
-    # timmy.create_random_walk()
-    # timmy.reset()
+    timmy.initialize('black', 'arrow')
+    timmy.draw_dash_line(50, 10)
+    timmy.reset()
+    timmy.create_shapes()
+    timmy.reset()
+    timmy.create_random_walk()
+    timmy.reset()
     timmy.create_spirograph(5)
     screen = Screen()
     screen.exitonclick()
