@@ -124,7 +124,7 @@ LightBlue
 LightCoral
 LightCyan
 LightGoldenrod
-LightGoldenrodYello
+LightGoldenrodYellow
 LightGray
 LightGreen
 LightGrey
