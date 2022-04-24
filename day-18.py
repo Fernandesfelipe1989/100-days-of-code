@@ -2,10 +2,6 @@ import random
 from random import choice
 from turtle import Turtle, Screen, colormode
 
-with open("color.txt", 'r') as colors:
-    COLOR = [color.lower().replace('\n', "").replace("\t", "") for color in colors]
-
-
 SHAPES = [
     ('triangle', 3),
     ('square', 4),
