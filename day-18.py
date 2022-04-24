@@ -69,7 +69,6 @@ class Jimmy(Turtle):
 
     def create_random_walk(self):
         self.speed(0)
-        # self.shape('circle')
         self.hideturtle()
         self.shapesize()
         self.width(5)
