@@ -3,25 +3,26 @@ from turtle import colormode, Screen, Turtle
 
 from utils import COLOURS
 
+SPACE_BETWEEN = 50
 
-def create_columns(obj, direction):
-    move_direction = obj.forward if direction else obj.backward
+
+def create_columns(obj):
     for _ in range(10):
         obj.color(choice(COLOURS))
         obj.stamp()
-        move_direction(25)
+        obj.forward(SPACE_BETWEEN)
 
 
 def turn_right(obj):
     obj.right(90)
-    obj.forward(25)
-    obj.left(90)
+    obj.forward(SPACE_BETWEEN)
+    obj.right(90)
 
 
 def turn_left(obj):
     obj.left(90)
-    obj.forward(25)
-    obj.right(90)
+    obj.forward(SPACE_BETWEEN)
+    obj.left(90)
 
 
 if __name__ == "__main__":
@@ -31,12 +32,8 @@ if __name__ == "__main__":
     jimmy.penup()
     direction = False
     for line in range(10):
-        create_columns(jimmy, direction)
-        if direction:
-            turn_right(jimmy)
-            direction = False
-        else:
-            turn_left(jimmy)
-            direction = True
+        create_columns(jimmy)
+        line < 9 and turn_right(jimmy) if direction else turn_left(jimmy)
+        direction = not direction
     screen = Screen()
     screen.exitonclick()
