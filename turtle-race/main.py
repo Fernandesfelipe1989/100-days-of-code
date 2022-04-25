@@ -1,8 +1,10 @@
 from turtle import Turtle, Screen
 from random import randint
+
 SUCCESSFUL_MESSAGE = "Congratulations your bet is right"
 FAIL_MESSAGE = "Sorry your bet is wrong"
-PLAY_AGAIN_MESSAGE = "Click Ok to play again or write stop"
+PLAY_AGAIN_MESSAGE = "Click ok to play again or write stop"
+
 
 class Race:
     COLOURS = ('red', 'orange', 'yellow', 'green', 'blue', 'purple')
@@ -27,15 +29,15 @@ class Race:
             self.racers.append(turtle)
 
     def check_winner(self):
-        finish = False
-        for racer in self.racers:
-            x = racer.xcor()
+        has_a_winner = False
+        for _racer in self.racers:
+            x = _racer.xcor()
             if x >= self.x_finish_pos:
-                finish = True
-                racer.write(f"I won the race")
-                self.winner = racer
+                has_a_winner = True
+                _racer.write(f"I won the race")
+                self.winner = _racer
                 break
-        return finish
+        return has_a_winner
 
     def start_race(self):
         finish = False
@@ -45,20 +47,21 @@ class Race:
         return finish and self.winner
 
     def move_racers(self):
-        for racer in self.racers:
-            racer.forward(randint(0, 10))
+        for _racer in self.racers:
+            _racer.forward(randint(0, 10))
 
 
-screen = Screen()
-screen.title("Welcome to the turtle race!")
-finish = False
-while not finish:
-    user_bet = screen.textinput(title="Who's the winner?", prompt="Which turtle will win the race?").lower()
-    racer = Race(border=20)
-    winner = racer.start_race()
-    message = SUCCESSFUL_MESSAGE if winner.color()[0].lower() == user_bet else FAIL_MESSAGE
-    message = "\n".join([message, PLAY_AGAIN_MESSAGE])
-    user_answer = screen.textinput(prompt=message, title="Race Result").lower()
-    finish = user_answer == 'stop'
-    screen.clear()
-screen.exitonclick()
+if __name__ == "__main__":
+    screen = Screen()
+    screen.title("Welcome to the turtle race!")
+    finish_game = False
+    while not finish_game:
+        user_bet = screen.textinput(title="Who's the winner?", prompt="Which turtle will win the race?").lower()
+        racer = Race(border=20)
+        winner = racer.start_race()
+        message = SUCCESSFUL_MESSAGE if winner.color()[0].lower() == user_bet else FAIL_MESSAGE
+        message = "\n".join([message, PLAY_AGAIN_MESSAGE])
+        user_answer = screen.textinput(prompt=message, title="Race Result").lower()
+        finish_game = user_answer == 'stop'
+        screen.clear()
+    screen.exitonclick()
