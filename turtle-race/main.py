@@ -1,9 +1,10 @@
 from turtle import Turtle, Screen
 from random import randint
 
+MESSAGE = "Which turtle will win the race?"
 SUCCESSFUL_MESSAGE = "Congratulations your bet is right"
 FAIL_MESSAGE = "Sorry your bet is wrong"
-PLAY_AGAIN_MESSAGE = "Click ok to play again or write stop"
+PLAY_AGAIN_MESSAGE = "Which turtle will win the race? Or write stop to exit the game"
 
 
 class Race:
@@ -16,10 +17,8 @@ class Race:
         self.winner = None
         self.x_finish_pos = width - 150
         step = (height - 2 * border) // len(self.COLOURS)
-        print(step)
         next_y_pos = -(height // 2) + border
         for color in self.COLOURS:
-            print(next_y_pos)
             turtle = Turtle()
             turtle.shape('turtle')
             turtle.color(color)
@@ -55,13 +54,13 @@ if __name__ == "__main__":
     screen = Screen()
     screen.title("Welcome to the turtle race!")
     finish_game = False
+    user_bet = screen.textinput(title="Who's the winner?", prompt="Which turtle will win the race?").lower()
     while not finish_game:
-        user_bet = screen.textinput(title="Who's the winner?", prompt="Which turtle will win the race?").lower()
         racer = Race(border=20)
         winner = racer.start_race()
         message = SUCCESSFUL_MESSAGE if winner.color()[0].lower() == user_bet else FAIL_MESSAGE
         message = "\n".join([message, PLAY_AGAIN_MESSAGE])
-        user_answer = screen.textinput(prompt=message, title="Race Result").lower()
-        finish_game = user_answer == 'stop'
+        user_bet = screen.textinput(prompt=message, title="Race Result").lower()
+        finish_game = user_bet == 'stop'
         screen.clear()
     screen.exitonclick()
