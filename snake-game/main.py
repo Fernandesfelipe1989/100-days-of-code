@@ -1,6 +1,7 @@
 from time import sleep
-from turtle import Screen, Turtle
+from turtle import Screen
 
+from food import Food
 from snake import Snake
 
 if __name__ == "__main__":
@@ -12,6 +13,7 @@ if __name__ == "__main__":
     screen.tracer(0)
     screen.listen()
     snake = Snake()
+    food = Food()
     screen.onkey(snake.up, "Up")
     screen.onkey(snake.down, "Down")
     screen.onkey(snake.left, "Left")
