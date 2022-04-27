@@ -1,7 +1,7 @@
 from turtle import Turtle
 
 
-class Snake:
+class Snake(Turtle):
     START_POSITION = ((0, 0), (-20, 0), (-40, 0))
     MOVE_DISTANCE = 20
     UP = 90
@@ -10,6 +10,8 @@ class Snake:
     LEFT = 180
 
     def __init__(self):
+        super().__init__()
+        self.speed('fastest')
         self.segments = [self.create_snake_part(position) for position in self.START_POSITION]
         self.head = self.segments[0]
 

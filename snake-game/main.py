@@ -23,8 +23,8 @@ if __name__ == "__main__":
 
     while game_is_on:
         screen.update()
-        sleep(0.1)
         snake.move()
+        sleep(0.08)
 
         if snake.head.distance(food) < 15:
             food.refresh()
