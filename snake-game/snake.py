@@ -12,21 +12,19 @@ class Snake(Turtle):
     def __init__(self):
         super().__init__()
         self.speed('fastest')
-        self.segments = [self.create_snake_part(position) for position in self.START_POSITION]
+        self.segments = [self.add_segment(position) for position in self.START_POSITION]
         self.head = self.segments[0]
 
     @staticmethod
-    def create_snake_part(pos):
+    def add_segment(pos):
         instance = Turtle('square')
         instance.color('white')
         instance.penup()
         instance.goto(pos)
         return instance
 
-    def add_tail(self):
-        pos_x = self.segments[-1].xcor() - 20
-        pos_y = self.segments[-1].xcor() - 20
-        self.segments.append(self.create_snake_part((pos_x, pos_y)))
+    def extend(self):
+        self.segments.append(self.add_segment(self.segments[-1].position()))
 
     def move(self):
         for seg_num in range(len(self.segments) - 1, 0, -1):
