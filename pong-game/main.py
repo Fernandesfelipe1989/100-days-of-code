@@ -1,4 +1,6 @@
-from turtle import Screen, Turtle
+from turtle import Screen
+
+
 HEIGHT = 600
 WIDTH = 800
 
@@ -9,5 +11,5 @@ if __name__ == "__main__":
     screen.bgcolor('black')
     screen.title('The Pong Game')
     screen.listen()
-    
+
     screen.exitonclick()
