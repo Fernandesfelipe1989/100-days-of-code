@@ -4,6 +4,7 @@ from turtle import Screen
 from food import Food
 from snake import Snake
 from scoreboard import ScoreBoard
+from utils import X, Y
 
 if __name__ == "__main__":
     game_is_on = True
@@ -26,8 +27,14 @@ if __name__ == "__main__":
         snake.move()
         sleep(0.08)
 
+    # Detect collision with food.
         if snake.head.distance(food) < 15:
             food.refresh()
             scoreboard.update_score()
             snake.add_tail()
+
+    # Detect collision with wall.
+        if snake.head.xcor() > X or snake.head.xcor() < -X or snake.head.ycor() > Y or snake.head.ycor() < - Y:
+            game_is_on = False
+            scoreboard.game_over()
     screen.exitonclick()
