@@ -23,6 +23,11 @@ class Snake(Turtle):
         instance.goto(pos)
         return instance
 
+    def add_tail(self):
+        pos_x = self.segments[-1].xcor() - 20
+        pos_y = self.segments[-1].xcor() - 20
+        self.segments.append(self.create_snake_part((pos_x, pos_y)))
+
     def move(self):
         for seg_num in range(len(self.segments) - 1, 0, -1):
             position = self.segments[seg_num - 1].position()
