@@ -1,7 +1,7 @@
 from random import randint
 from turtle import Turtle
 
-from utils import X, Y
+from utils import PRECISION, X, Y
 
 
 class Food(Turtle):
@@ -15,5 +15,5 @@ class Food(Turtle):
         self.speed('fastest')
 
     def refresh(self):
-        pos = (randint(-X, X), randint(-Y, Y))
+        pos = (randint(-X + PRECISION, X - PRECISION), randint(-Y + PRECISION, Y - PRECISION))
         self.goto(pos)

@@ -4,7 +4,7 @@ from turtle import Screen
 from food import Food
 from snake import Snake
 from scoreboard import ScoreBoard
-from utils import X, Y
+from utils import PRECISION, X, Y
 
 if __name__ == "__main__":
     screen = Screen()
@@ -29,15 +29,23 @@ if __name__ == "__main__":
             sleep(0.08)
 
         # Detect collision with food.
-            if snake.head.distance(food) < 15:
+            if snake.head.distance(food) < PRECISION:
                 food.refresh()
                 scoreboard.update_score()
                 snake.extend()
 
         # Detect collision with wall.
-            if snake.head.xcor() > X or snake.head.xcor() < -X or snake.head.ycor() > Y or snake.head.ycor() < - Y:
+            if snake.head.xcor() > X + PRECISION or snake.head.xcor() < -X - PRECISION \
+                    or snake.head.ycor() > Y + PRECISION or snake.head.ycor() < - Y - PRECISION:
                 game_is_on = False
                 scoreboard.game_over()
+
+        # Detect collision with tail
+            for segment in snake.segments[1:]:
+                if snake.head.position == segment.position:
+                    game_is_on = False
+                    scoreboard.game_over()
+
         screen.reset()
         run_again = screen.textinput(title="Game Over",
                                      prompt=f"Your score: {scoreboard.score}\nDo you want run again: yes or no")
