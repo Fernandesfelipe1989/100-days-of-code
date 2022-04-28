@@ -27,5 +27,10 @@ class Ball(Turtle):
         self.x_move *= -1
 
     def detect_collision_paddle(self, instance):
-        return self.distance(instance) < PRECISION and (self.xcor() > X - PRECISION or self.xcor() < -X + PRECISION)
+        return self.distance(instance) < 50 and (self.xcor() > 320 or self.xcor() < -320)
+
+    def reset_position(self):
+        self.x_move *= -1
+        self.y_move *= -1
+        self.goto(0, 0)
 

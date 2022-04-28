@@ -29,9 +29,16 @@ if __name__ == "__main__":
         ball.move()
 
         # Detect collision with wall
-        (ball.ycor() + PRECISION > Y or ball.ycor() - PRECISION < -Y) and ball.bounce_y()
+        (ball.ycor() > Y - PRECISION or ball.ycor() < -Y + PRECISION) and ball.bounce_y()
 
         # Detect collision with paddle
         (ball.detect_collision_paddle(r_paddle) or ball.detect_collision_paddle(l_paddle)) and ball.bounce_x()
 
+        # Detect R paddle miss
+        if ball.xcor() > 380:
+            ball.reset_position()
+
+        # Detect L paddle miss
+        if ball.xcor() < -380:
+            ball.reset_position()
     screen.exitonclick()
