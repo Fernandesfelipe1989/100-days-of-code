@@ -9,7 +9,7 @@ class Ball(Turtle):
         super().__init__()
         self.color('white')
         self.shape('circle')
-        self.speed(2)
+        self.move_speed = 0.1
         self.shapesize(stretch_wid=1, stretch_len=1)
         self.penup()
         self.x_move = BALL_MOVE
@@ -24,6 +24,7 @@ class Ball(Turtle):
         self.y_move *= -1
 
     def bounce_x(self):
+        self.move_speed *= 0.9
         self.x_move *= -1
 
     def detect_collision_paddle(self, instance):
@@ -32,5 +33,6 @@ class Ball(Turtle):
     def reset_position(self):
         self.x_move *= -1
         self.y_move *= -1
+        self.move_speed = 0.1
         self.goto(0, 0)
 

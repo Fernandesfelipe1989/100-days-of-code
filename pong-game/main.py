@@ -26,7 +26,7 @@ if __name__ == "__main__":
     screen.onkey(fun=l_paddle.go_down, key="s")
     game_is_on = True
     while game_is_on:
-        sleep(0.1)
+        sleep(ball.move_speed)
         screen.update()
         ball.move()
 
