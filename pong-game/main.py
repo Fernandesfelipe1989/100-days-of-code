@@ -32,8 +32,6 @@ if __name__ == "__main__":
         (ball.ycor() + PRECISION > Y or ball.ycor() - PRECISION < -Y) and ball.bounce_y()
 
         # Detect collision with paddle
-        ball.detect_collision_paddle_right(r_paddle) and ball.bounce_x()
-        ball.detect_collision_paddle_left(l_paddle) and ball.bounce_x()
-
+        (ball.detect_collision_paddle(r_paddle) or ball.detect_collision_paddle(l_paddle)) and ball.bounce_x()
 
     screen.exitonclick()

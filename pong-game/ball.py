@@ -26,8 +26,6 @@ class Ball(Turtle):
     def bounce_x(self):
         self.x_move *= -1
 
-    def detect_collision_paddle_right(self, instance):
-        return self.distance(instance) < PRECISION and self.xcor() > X - PRECISION
+    def detect_collision_paddle(self, instance):
+        return self.distance(instance) < PRECISION and (self.xcor() > X - PRECISION or self.xcor() < -X + PRECISION)
 
-    def detect_collision_paddle_left(self, instance):
-        return self.distance(instance) < PRECISION and self.xcor() < -X + PRECISION
