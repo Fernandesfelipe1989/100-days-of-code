@@ -12,18 +12,18 @@ class ScoreBoard(Turtle):
         self.color("white")
         self.penup()
         self.hideturtle()
-        self.goto(0, Y - 20)
-        self.font_config = dict(align='center', font=("Arial", 16, "bold"))
+        self.goto(0, Y - 100)
+        self.font_config = dict(align='center', font=("Courier", 80, "normal"))
         self.write_scoreboard()
 
     def write_scoreboard(self):
         self.clear()
-        self.write(f"Score: {self.l_score} | Score: {self.r_score}", **self.font_config)
+        self.write(f"{self.l_score}  |  {self.r_score}", **self.font_config)
 
-    def add_left_score(self):
+    def left_point(self):
         self.l_score += 1
         self.write_scoreboard()
 
-    def add_right_score(self):
+    def right_point(self):
         self.r_score += 1
         self.write_scoreboard()

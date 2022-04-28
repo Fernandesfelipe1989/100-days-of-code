@@ -39,10 +39,10 @@ if __name__ == "__main__":
         # Detect R paddle miss
         if ball.xcor() > 380:
             ball.reset_position()
-            scoreboard.add_left_score()
+            scoreboard.left_point()
 
         # Detect L paddle miss
         if ball.xcor() < -380:
             ball.reset_position()
-            scoreboard.add_right_score()
+            scoreboard.right_point()
     screen.exitonclick()
