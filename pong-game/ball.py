@@ -1,6 +1,6 @@
 from turtle import Turtle
 
-from utils import BALL_MOVE, PRECISION, X
+from utils import BALL_MOVE
 
 
 class Ball(Turtle):
@@ -35,4 +35,3 @@ class Ball(Turtle):
         self.y_move *= -1
         self.move_speed = 0.1
         self.goto(0, 0)
-

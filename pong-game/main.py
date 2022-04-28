@@ -1,11 +1,10 @@
-from random import choice
 from time import sleep
-from turtle import Screen, Turtle
+from turtle import Screen
 
 from ball import Ball
 from paddle import Paddle
 from scoreboard import ScoreBoard
-from utils import HEIGHT, WIDTH, PRECISION, PADDLE_MOVE, X, Y
+from utils import HEIGHT, WIDTH, PRECISION, PRECISION_PADDLE, X, Y
 
 
 if __name__ == "__main__":
@@ -37,12 +36,12 @@ if __name__ == "__main__":
         (ball.detect_collision_paddle(r_paddle) or ball.detect_collision_paddle(l_paddle)) and ball.bounce_x()
 
         # Detect R paddle miss
-        if ball.xcor() > 380:
+        if ball.xcor() > X - PRECISION_PADDLE:
             ball.reset_position()
             scoreboard.left_point()
 
         # Detect L paddle miss
-        if ball.xcor() < -380:
+        if ball.xcor() < -X + PRECISION_PADDLE:
             ball.reset_position()
             scoreboard.right_point()
     screen.exitonclick()
