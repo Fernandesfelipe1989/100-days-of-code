@@ -13,22 +13,15 @@ class Ball(Turtle):
         self.shapesize(stretch_wid=1, stretch_len=1)
         self.penup()
 
-    def move(self, x_move, y_move):
-        x = self.ycor() + x_move
-        y = self.ycor() + y_move
+    def move(self):
+        x, y = self.bounce(x_move=BALL_MOVE, y_move=BALL_MOVE)
+        print(x, y)
         self.goto(x, y)
 
-    def bounce(self):
-        print('Here')
-        print(self.position())
-        if self.xcor() + PRECISION > X:
-            self.move(x_move=-BALL_MOVE, y_move=BALL_MOVE)
-        if self.xcor() - PRECISION > -X:
-            self.move(x_move=BALL_MOVE, y_move=BALL_MOVE)
-        if self.ycor() + PRECISION > Y:
-            self.move(x_move=BALL_MOVE, y_move=-BALL_MOVE)
-        if self.ycor() - PRECISION > -Y:
-            self.move(x_move=BALL_MOVE, y_move=BALL_MOVE)
+    def bounce(self, x_move, y_move):
+        # x = -x_move if self.xcor() + x_move + PRECISION > X else x_move
+        y = -y_move if self.ycor() + y_move + PRECISION > Y else y_move
+        return self.xcor() + x_move, self.ycor() + y
 
     def detect_collision_paddle(self, instance):
         return self.distance(instance) < PRECISION

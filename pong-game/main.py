@@ -4,7 +4,7 @@ from turtle import Screen, Turtle
 
 from ball import Ball
 from paddle import Paddle
-from utils import  BALL_MOVE, HEIGHT, WIDTH, PADDLE_MOVE, X
+from utils import BALL_MOVE, HEIGHT, WIDTH, PADDLE_MOVE, X
 
 
 if __name__ == "__main__":
@@ -24,8 +24,7 @@ if __name__ == "__main__":
     screen.onkey(fun=l_paddle.go_down, key="s")
     game_is_on = True
     while game_is_on:
-        ball.move(x_move=BALL_MOVE, y_move=BALL_MOVE)
-        ball.bounce()
+        ball.move()
         ball.detect_collision_paddle(r_paddle) and ball.move(x_move=-BALL_MOVE, y_move=BALL_MOVE)
         ball.detect_collision_paddle(l_paddle) and ball.move(x_move=BALL_MOVE, y_move=BALL_MOVE)
         sleep(0.1)
