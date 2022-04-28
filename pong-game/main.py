@@ -4,6 +4,7 @@ from turtle import Screen, Turtle
 
 from ball import Ball
 from paddle import Paddle
+from scoreboard import ScoreBoard
 from utils import HEIGHT, WIDTH, PRECISION, PADDLE_MOVE, X, Y
 
 
@@ -12,6 +13,7 @@ if __name__ == "__main__":
     r_paddle = Paddle(X)
     l_paddle = Paddle(-X)
     ball = Ball()
+    scoreboard = ScoreBoard()
     screen.tracer(0)
     screen.setup(height=HEIGHT, width=WIDTH)
     screen.bgcolor('black')
@@ -37,8 +39,10 @@ if __name__ == "__main__":
         # Detect R paddle miss
         if ball.xcor() > 380:
             ball.reset_position()
+            scoreboard.add_left_score()
 
         # Detect L paddle miss
         if ball.xcor() < -380:
             ball.reset_position()
+            scoreboard.add_right_score()
     screen.exitonclick()
