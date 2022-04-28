@@ -1,6 +1,6 @@
 from turtle import Turtle
 
-from utils import BALL_MOVE, PRECISION
+from utils import BALL_MOVE, PRECISION, X
 
 
 class Ball(Turtle):
@@ -20,11 +20,14 @@ class Ball(Turtle):
         y = self.ycor() + self.y_move
         self.goto(x, y)
 
-    def bounce(self):
+    def bounce_y(self):
         self.y_move *= -1
 
-    def bounce_paddle(self):
+    def bounce_x(self):
         self.x_move *= -1
 
-    def detect_collision_paddle(self, instance):
-        return self.distance(instance) < PRECISION
+    def detect_collision_paddle_right(self, instance):
+        return self.distance(instance) < PRECISION and self.xcor() > X - PRECISION
+
+    def detect_collision_paddle_left(self, instance):
+        return self.distance(instance) < PRECISION and self.xcor() < -X + PRECISION
