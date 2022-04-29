@@ -15,10 +15,15 @@ if __name__ == "__main__":
 
     screen.listen()
     screen.onkey(fun=player.up, key="Up")
+    screen.onkey(fun=player._test_has_collision, key="Down")
 
     game_is_on = True
+    collision = False
     while game_is_on:
         if player.finish_level():
             scoreboard.increment_level()
+        if player.collision:
+            scoreboard.reset_level()
+
         time.sleep(0.1)
         screen.update()
