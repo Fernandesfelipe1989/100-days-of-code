@@ -15,9 +15,6 @@ class Player(Turtle):
         self.penup()
         self.initialize()
 
-        # TODO: Remove this
-        self.collision = False
-
     def up(self):
         self.forward(MOVE_DISTANCE)
 
@@ -31,8 +28,4 @@ class Player(Turtle):
     def initialize(self):
         self.setheading(90)
         self.goto(STARTING_POSITION)
-
-    # TODO: Remove this
-    def _test_has_collision(self):
-        self.collision = not self.collision
 
