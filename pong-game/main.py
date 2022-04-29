@@ -6,7 +6,7 @@ from paddle import Paddle
 from scoreboard import ScoreBoard
 from utils import HEIGHT, WIDTH, PRECISION, PRECISION_PADDLE, X, Y
 
-
+# TODO: The collision with paddle was a bug and the paddle's movement speed is weird
 if __name__ == "__main__":
     screen = Screen()
     r_paddle = Paddle(X)
