@@ -19,7 +19,11 @@ class Player(Turtle):
         self.forward(MOVE_DISTANCE)
 
     def finish_level(self):
-        return self.ycor() > FINISH_LINE_Y and self.initialize()
+        if self.ycor() <= FINISH_LINE_Y:
+            return False
+
+        self.initialize()
+        return True
 
     def initialize(self):
         self.setheading(90)
