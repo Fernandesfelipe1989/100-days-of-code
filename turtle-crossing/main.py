@@ -12,16 +12,22 @@ if __name__ == "__main__":
     screen.tracer(0)
     player = Player()
     scoreboard = Scoreboard()
+    car_manager = CarManager()
 
     screen.listen()
     screen.onkey(fun=player.up, key="Up")
+
+    # TODO: Remove this part
     screen.onkey(fun=player._test_has_collision, key="Down")
 
     game_is_on = True
     collision = False
     while game_is_on:
+        car_manager.move_cars()
+
         if player.finish_level():
             scoreboard.increment_level()
+        # Update this part
         if player.collision:
             scoreboard.reset_level()
 
