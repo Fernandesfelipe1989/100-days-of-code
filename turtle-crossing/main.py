@@ -37,7 +37,6 @@ if __name__ == "__main__":
             if car_manager.check_collision(player):
                 scoreboard.reset_level()
                 game_is_on = False
-                screen.onkey(fun=None, key="Up")
 
             time.sleep(0.1)
             screen.update()
