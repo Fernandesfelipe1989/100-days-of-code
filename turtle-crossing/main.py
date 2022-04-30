@@ -44,3 +44,4 @@ if __name__ == "__main__":
         play_again = screen.textinput(prompt='Do you want play again? Yes or No', title="Game over")
         play_again = play_again and play_again.lower()
         screen.clearscreen()
+screen.exitonclick()
