@@ -1,5 +1,6 @@
 
 class Mail:
+    PLACEHOLDER = '[name]'
 
     def __init__(self):
         self.invited_names = []
@@ -7,11 +8,11 @@ class Mail:
             self.letter = message.read().strip()
         with open("./Input/Names/invited_names.txt", 'r') as invited:
             for name in invited:
-                self.invited_names.append(name.replace("\n", ""))
+                self.invited_names.append(name.strip())
 
     def create_personalize_letter_message(self):
         for name in self.invited_names:
-            message = self.letter.replace("[name]", name)
+            message = self.letter.replace(self.PLACEHOLDER, name)
             with open(f"./Output/ReadyToSend/letter_for_{name}.txt", 'w') as letter:
                 letter.write(message)
 
