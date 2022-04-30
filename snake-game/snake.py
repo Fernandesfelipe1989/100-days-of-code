@@ -12,8 +12,8 @@ class Snake(Turtle):
     def __init__(self):
         super().__init__()
         self.speed('fastest')
-        self.segments = [self.add_segment(position) for position in self.START_POSITION]
-        self.head = self.segments[0]
+        self.segments = self.create_snake()
+        self.head = self.create_head()
 
     @staticmethod
     def add_segment(pos):
@@ -23,6 +23,12 @@ class Snake(Turtle):
         instance.goto(pos)
         return instance
 
+    def create_snake(self):
+        return [self.add_segment(position) for position in self.START_POSITION]
+
+    def create_head(self):
+        return self.segments[0]
+
     def extend(self):
         self.segments.append(self.add_segment(self.segments[-1].position()))
 
@@ -31,6 +37,13 @@ class Snake(Turtle):
             position = self.segments[seg_num - 1].position()
             self.segments[seg_num].goto(position)
         self.head.forward(self.MOVE_DISTANCE)
+
+    def reset(self):
+        for segment in self.segments:
+            segment.reset()
+        self.segments.clear()
+        self.segments = self.create_snake()
+        self.head = self.create_head()
 
     def up(self):
         if self.head.heading() != self.DOWN:

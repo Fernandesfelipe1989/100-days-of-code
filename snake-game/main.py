@@ -12,42 +12,38 @@ if __name__ == "__main__":
     screen.bgcolor('black')
     screen.title("My Snake Game")
     screen.tracer(0)
-    run_again = "yes"
-    while run_again == 'yes':
-        snake = Snake()
-        food = Food()
-        scoreboard = ScoreBoard()
-        screen.listen()
-        screen.onkey(snake.up, "Up")
-        screen.onkey(snake.down, "Down")
-        screen.onkey(snake.left, "Left")
-        screen.onkey(snake.right, "Right")
-        game_is_on = True
-        while game_is_on:
-            screen.update()
-            snake.move()
-            sleep(0.08)
+    snake = Snake()
+    food = Food()
+    scoreboard = ScoreBoard()
+    screen.listen()
+    screen.onkey(snake.up, "Up")
+    screen.onkey(snake.down, "Down")
+    screen.onkey(snake.left, "Left")
+    screen.onkey(snake.right, "Right")
+    game_is_on = True
+    while game_is_on:
+        screen.update()
+        snake.move()
+        sleep(0.08)
 
-        # Detect collision with food.
-            if snake.head.distance(food) < PRECISION:
+    # Detect collision with food.
+        if snake.head.distance(food) < PRECISION:
+            food.refresh()
+            scoreboard.update_score()
+            snake.extend()
+
+    # Detect collision with wall.
+        if snake.head.xcor() > X + PRECISION or snake.head.xcor() < -X - PRECISION \
+                or snake.head.ycor() > Y + PRECISION or snake.head.ycor() < - Y - PRECISION:
+            scoreboard.reset()
+            snake.reset()
+            food.refresh()
+
+    # Detect collision with tail
+        for segment in snake.segments[1:]:
+            if snake.head.position == segment.position:
+                scoreboard.reset()
+                snake.reset()
                 food.refresh()
-                scoreboard.update_score()
-                snake.extend()
 
-        # Detect collision with wall.
-            if snake.head.xcor() > X + PRECISION or snake.head.xcor() < -X - PRECISION \
-                    or snake.head.ycor() > Y + PRECISION or snake.head.ycor() < - Y - PRECISION:
-                game_is_on = False
-                scoreboard.game_over()
-
-        # Detect collision with tail
-            for segment in snake.segments[1:]:
-                if snake.head.position == segment.position:
-                    game_is_on = False
-                    scoreboard.game_over()
-
-        screen.reset()
-        run_again = screen.textinput(title="Game Over",
-                                     prompt=f"Your score: {scoreboard.score}\nDo you want run again: yes or no")
-        run_again = run_again and run_again.lower()
     screen.exitonclick()
