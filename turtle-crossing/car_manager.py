@@ -48,7 +48,7 @@ class CarManager:
 
     def check_collision(self, instance):
         for car in self.cars:
-            if car.distance(instance) < 20:
+            if car.distance(instance) < 25:
                 self.move_distance = 0
                 return True
         return False
