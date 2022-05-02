@@ -8,10 +8,10 @@ if __name__ == "__main__":
         'Fur Color': ['grey', 'red', 'black'],
         'Count': []
     }
-    gray = data[data["Primary Fur Color"] == "Gray"]
-    black = data[data["Primary Fur Color"] == "Black"]
-    red = data[data["Primary Fur Color"] == "Cinnamon"]
-    info_squirrel['Count'] = [gray.X.count(), red.X.count(), black.X.count()]
+    gray_squirrels = data[data["Primary Fur Color"] == "Gray"]
+    black_squirrels = data[data["Primary Fur Color"] == "Black"]
+    red_squirrels = data[data["Primary Fur Color"] == "Cinnamon"]
+    info_squirrel['Count'] = [len(gray_squirrels), len(red_squirrels), len(black_squirrels)]
     data_squirrel = pandas.DataFrame(info_squirrel)
     data_squirrel.to_csv('squirrel_count.csv')
 
