@@ -2,7 +2,7 @@ import turtle
 
 import pandas
 
-FONT = ("Courier", 12, "normal")
+FONT = ("Courier", 10, "normal")
 IMAGE = "blank_states_img.gif"
 TITLE = "{}/{} States Correct"
 
@@ -26,12 +26,11 @@ if __name__ == "__main__":
     screen.addshape(IMAGE)
     turtle.shape(IMAGE)
     record_guess = []
-    qty_right_guess = 0
 
-    while qty_right_guess < qty_states:
+    while len(record_guess) < qty_states:
         answer_state = screen.textinput(
             prompt="What's another state's name?",
-            title=TITLE.format(qty_right_guess, qty_states)
+            title=TITLE.format(len(record_guess), qty_states)
         )
         answer_state = answer_state and answer_state.title()
         data_state = states[states['state'] == answer_state]
