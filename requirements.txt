@@ -13,8 +13,13 @@ itsdangerous==2.1.2
 Jinja2==3.1.1
 MarkupSafe==2.1.1
 multidict==6.0.2
+numpy==1.22.3
+pandas==1.4.2
+python-dateutil==2.8.2
+pytz==2022.1
 replit==3.2.4
 requests==2.27.1
+six==1.16.0
 typing-extensions==3.10.0.2
 urllib3==1.26.9
 Werkzeug==2.1.1
