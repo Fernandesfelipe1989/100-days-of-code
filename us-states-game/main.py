@@ -2,9 +2,9 @@ import turtle
 
 import pandas
 
-IMAGE = "blank_states_img.gif"
-
 FONT = ("Courier", 12, "normal")
+IMAGE = "blank_states_img.gif"
+TITLE = "{}/{} States Correct"
 
 
 class State(turtle.Turtle):
@@ -20,14 +20,23 @@ class State(turtle.Turtle):
 
 if __name__ == "__main__":
     states = pandas.read_csv("50_states.csv")
-    print(states)
+    qty_states = len(states)
     screen = turtle.Screen()
     screen.title("U.S. States Game")
     screen.addshape(IMAGE)
     turtle.shape(IMAGE)
-    answer_state = screen.textinput(prompt="What's another state's name?", title="Guess the State")
-    answer_state = answer_state and answer_state.title()
-    data_state = states[states['state'] == answer_state]
+    record_guess = []
+    qty_right_guess = 0
 
-    not data_state.empty and State(name=answer_state, x=data_state.x, y=data_state.y)
+    while qty_right_guess < qty_states:
+        answer_state = screen.textinput(
+            prompt="What's another state's name?",
+            title=TITLE.format(qty_right_guess, qty_states)
+        )
+        answer_state = answer_state and answer_state.title()
+        data_state = states[states['state'] == answer_state]
+        if not data_state.empty and not (answer_state in record_guess):
+            State(name=answer_state, x=data_state.x, y=data_state.y)
+            record_guess.append(answer_state)
+            qty_right_guess = len(record_guess)
     turtle.mainloop()
