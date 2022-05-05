@@ -12,10 +12,27 @@ LONG_BREAK_MIN = 20
 # ---------------------------- TIMER RESET ------------------------------- # 
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
+resp = 0
 
 
 def start_timer():
-    countdown(1 * 60)
+    global resp
+    work_sec = WORK_MIN
+    short_break_sec = SHORT_BREAK_MIN
+    long_break_sec = LONG_BREAK_MIN
+    if resp % 2 == 0:
+        title_text.config(text="Work", fg=GREEN)
+        time = work_sec
+    else:
+        if resp % 7 == 0:
+            title_text.config(text="Break", fg=RED)
+            time = long_break_sec
+        else:
+            title_text.config(text="Break", fg=PINK)
+            time = short_break_sec
+    countdown(time)
+    resp += 1
+
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 
@@ -25,9 +42,11 @@ def countdown(count):
     seconds = count % 60
     seconds = seconds if seconds > 9 else f'0{seconds}'
     minutes = minutes if minutes > 9 else f'0{minutes}'
-    if count >= 0:
+    if count > 0:
         canvas.itemconfig(timer_text, text=f"{minutes}:{seconds}")
         window.after(1000, countdown, count - 1)
+    else:
+        start_timer()
 
 
 # ---------------------------- UI SETUP ------------------------------- #
