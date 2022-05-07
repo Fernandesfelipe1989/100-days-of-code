@@ -1,22 +1,29 @@
 import tkinter as tk
 FONT = ("Arial", 12, "normal")
-
+DEFAULT_EMAIl = 'test@gmail.com'
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+
+
 def generate_password():
     pass
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 
 def save_password():
-    pass
+    print("Save the password")
+    info_text = " | ".join([website_entry.get(), email_entry.get(), password_entry.get()])
+    info_text += "\n"
+    with open('data.txt', 'a') as file:
+        file.write(info_text)
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 
 window = tk.Tk()
 window.title("Password Manager")
 window.config(pady=50, padx=50, bg='white')
-window.resizable(False, False)
+# window.resizable(False, False)
 
 # Logo Config
 logo_image = tk.PhotoImage(file='logo.png')
@@ -36,9 +43,11 @@ password_text.grid(row=3, column=0, sticky='e')
 
 # Entry Config
 website_entry = tk.Entry(width=45)
+website_entry.focus()
 website_entry.grid(row=1, column=1, columnspan=2, sticky='w')
 
 email_entry = tk.Entry(width=45)
+email_entry.insert(0, DEFAULT_EMAIl)
 email_entry.grid(row=2, column=1, columnspan=2, sticky='w')
 
 password_entry = tk.Entry(width=21)
