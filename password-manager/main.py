@@ -14,7 +14,7 @@ def save_password():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
-    
+
     info_text = " | ".join([website, email, password]) + "\n"
     with open('data.txt', 'a') as file:
         file.write(info_text)

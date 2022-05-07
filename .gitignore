@@ -160,3 +160,4 @@ cython_debug/
 .idea/
 letter_for*
 states_*
+data.txt
