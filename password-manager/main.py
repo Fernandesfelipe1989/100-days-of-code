@@ -13,21 +13,14 @@ def initialize_entries():
 
 
 def generate_password():
-
     letters = [choice(utils.LETTERS) for _ in range(randint(8, 10))]
-
     symbols = [choice(utils.SYMBOLS) for _ in range(randint(2, 4))]
-
     numbers = [choice(utils.NUMBERS) for _ in range(randint(2, 4))]
 
     password_list = letters + symbols + numbers
-    
+
     shuffle(password_list)
-
-    password = ""
-    for char in password_list:
-        password += char
-
+    password = "".join(password_list)
     password_entry.insert(0, password)
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
