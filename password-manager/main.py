@@ -1,21 +1,34 @@
+from random import choice, randint, shuffle
 import tkinter as tk
 from tkinter import messagebox
 
-FONT = ("Arial", 12, "normal")
-DEFAULT_EMAIl = 'test@gmail.com'
-FORMAT_PATTERN = "{} | {} | {}\n"
-MESSAGE = "These are the details entered:\n Email: {}\n Password: {}\nDo you want to save?"
+import utils
 
 
 def initialize_entries():
     website_entry.delete(0, tk.END) or email_entry.delete(0, tk.END) or password_entry.delete(0, tk.END)
-    email_entry.insert(0, DEFAULT_EMAIl)
+    email_entry.insert(0, utils.DEFAULT_EMAIl)
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 
 def generate_password():
-    pass
+
+    letters = [choice(utils.LETTERS) for _ in range(randint(8, 10))]
+
+    symbols = [choice(utils.SYMBOLS) for _ in range(randint(2, 4))]
+
+    numbers = [choice(utils.NUMBERS) for _ in range(randint(2, 4))]
+
+    password_list = letters + symbols + numbers
+    
+    shuffle(password_list)
+
+    password = ""
+    for char in password_list:
+        password += char
+
+    password_entry.insert(0, password)
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 
@@ -25,10 +38,10 @@ def save_password():
     password = password_entry.get()
 
     if website and email and password:
-        is_ok = messagebox.askokcancel(title=website, message=MESSAGE.format(email, password))
+        is_ok = messagebox.askokcancel(title=website, message=utils.MESSAGE.format(email, password))
 
         if is_ok:
-            info_text = FORMAT_PATTERN.format(website, email, password)
+            info_text = utils.FORMAT_PATTERN.format(website, email, password)
             with open('data.txt', 'a') as file:
                 file.write(info_text)
             initialize_entries()
@@ -50,13 +63,13 @@ canvas.create_image(100, 100, image=logo_image)
 canvas.grid(row=0, column=1)
 
 # Labels Config
-website_text = tk.Label(text='Website:', bg='white', font=FONT)
+website_text = tk.Label(text='Website:', bg='white', font=utils.FONT)
 website_text.grid(row=1, column=0, sticky='e')
 
-email_text = tk.Label(text="Email/Username:", bg='white', font=FONT)
+email_text = tk.Label(text="Email/Username:", bg='white', font=utils.FONT)
 email_text.grid(row=2, column=0, sticky='e')
 
-password_text = tk.Label(text='Password:', bg='white', font=FONT)
+password_text = tk.Label(text='Password:', bg='white', font=utils.FONT)
 password_text.grid(row=3, column=0, sticky='e')
 
 # Entry Config
@@ -65,7 +78,7 @@ website_entry.focus()
 website_entry.grid(row=1, column=1, columnspan=2, sticky='w')
 
 email_entry = tk.Entry(width=45)
-email_entry.insert(0, DEFAULT_EMAIl)
+email_entry.insert(0, utils.DEFAULT_EMAIl)
 email_entry.grid(row=2, column=1, columnspan=2, sticky='w')
 
 password_entry = tk.Entry(width=21)
