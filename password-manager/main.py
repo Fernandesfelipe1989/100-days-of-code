@@ -1,6 +1,15 @@
 import tkinter as tk
+from tkinter import messagebox
+
 FONT = ("Arial", 12, "normal")
 DEFAULT_EMAIl = 'test@gmail.com'
+FORMAT_PATTERN = "{} | {} | {}\n"
+MESSAGE = "These are the details entered:\n Email: {}\n Password: {}\nDo you want to save?"
+
+
+def initialize_entries():
+    website_entry.delete(0, tk.END) or email_entry.delete(0, tk.END) or password_entry.delete(0, tk.END)
+    email_entry.insert(0, DEFAULT_EMAIl)
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -15,10 +24,16 @@ def save_password():
     email = email_entry.get()
     password = password_entry.get()
 
-    info_text = " | ".join([website, email, password]) + "\n"
-    with open('data.txt', 'a') as file:
-        file.write(info_text)
-    website_entry.delete(0, tk.END) or email_entry.delete(0, tk.END) or password_entry.delete(0, tk.END)
+    if website and email and password:
+        is_ok = messagebox.askokcancel(title=website, message=MESSAGE.format(email, password))
+
+        if is_ok:
+            info_text = FORMAT_PATTERN.format(website, email, password)
+            with open('data.txt', 'a') as file:
+                file.write(info_text)
+            initialize_entries()
+    else:
+        messagebox.showinfo(title='Oops', message="Please make sure you haven't left any fields empty")
 
 # ---------------------------- UI SETUP ------------------------------- #
 
