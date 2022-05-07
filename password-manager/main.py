@@ -11,11 +11,14 @@ def generate_password():
 
 
 def save_password():
-    print("Save the password")
-    info_text = " | ".join([website_entry.get(), email_entry.get(), password_entry.get()])
-    info_text += "\n"
+    website = website_entry.get()
+    email = email_entry.get()
+    password = password_entry.get()
+    
+    info_text = " | ".join([website, email, password]) + "\n"
     with open('data.txt', 'a') as file:
         file.write(info_text)
+    website_entry.delete(0, tk.END) or email_entry.delete(0, tk.END) or password_entry.delete(0, tk.END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 
