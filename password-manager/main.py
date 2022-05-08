@@ -64,16 +64,19 @@ def save_password():
 
 def search_password():
     website = website_entry.get()
-    with open('data.json', 'r') as file:
-        data = json.load(file)
-
     try:
-        data_website = data[website.title()]
-    except KeyError:
-        messagebox.showinfo(title="Error", message=f"{website} is not found.")
+        with open('data.json', 'r') as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="You haven't saved any password yet.")
     else:
-        message = utils.FORMAT_PATTERN.format(data_website['email'], data_website['password'])
-        messagebox.showinfo(title=website, message=message)
+        try:
+            data_website = data[website.title()]
+        except KeyError:
+            messagebox.showinfo(title="Error", message=f"{website} is not found.")
+        else:
+            message = utils.FORMAT_PATTERN.format(data_website['email'], data_website['password'])
+            messagebox.showinfo(title=website, message=message)
 # ---------------------------- UI SETUP ------------------------------- #
 
 
