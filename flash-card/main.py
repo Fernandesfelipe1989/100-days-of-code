@@ -8,30 +8,25 @@ window = tk.Tk()
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
 window.title("Flash Card")
 
-# Card Back
-image_card_back = tk.PhotoImage(file="./images/card_back.png")
-card_back = tk.Canvas(width=800, height=526, bg=BACKGROUND_COLOR, highlightthickness=0)
-card_back.create_image(400, 526//2, image=image_card_back)
-card_back.grid(row=0, column=0, columnspan=2)
-
-# Card Front
-image_card_front = tk.PhotoImage(file="./images/card_front.png")
-card_front = tk.Canvas(width=800, height=526, bg=BACKGROUND_COLOR, highlightthickness=0)
-card_front.create_image(800//2, 526//2, image=image_card_front)
-card_front.grid(row=0, column=0, columnspan=2)
+# Card Canvas
+card_front = tk.PhotoImage(file="./images/card_front.png")
+card_back = tk.PhotoImage(file="./images/card_back.png")
+canvas = tk.Canvas(width=800, height=526, bg=BACKGROUND_COLOR, highlightthickness=0)
+canvas.create_image(800//2, 526//2, image=card_front)
+canvas.grid(row=0, column=0, columnspan=2)
 
 # Card Front Language text
-front_language_text = card_front.create_text(400, 150, text="French", font=(FONT, 40, "italic"))
-front_word_text = card_front.create_text(400, 263, text="trouve", font=(FONT, 60, "bold"))
+language_text = canvas.create_text(400, 150, text="French", font=(FONT, 40, "italic"))
+word_text = canvas.create_text(400, 263, text="trouve", font=(FONT, 60, "bold"))
 
 # Wrong button
 image_wrong = tk.PhotoImage(file="./images/wrong.png")
-wrong_button = tk.Button(image=image_wrong, highlightthickness=0, border=0)
-wrong_button.grid(row=1, column=0)
+unknown_button = tk.Button(image=image_wrong, highlightthickness=0, border=0)
+unknown_button.grid(row=1, column=0)
 
 # Right button
 image_right = tk.PhotoImage(file="./images/right.png")
-right_button = tk.Button(image=image_right, highlightthickness=0, border=0)
-right_button.grid(row=1, column=1)
+know_button = tk.Button(image=image_right, highlightthickness=0, border=0)
+know_button.grid(row=1, column=1)
 
 window.mainloop()
