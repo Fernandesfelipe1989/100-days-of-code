@@ -1,3 +1,4 @@
+import json
 from random import choice, randint, shuffle
 import tkinter as tk
 from tkinter import messagebox
@@ -24,7 +25,10 @@ def generate_password():
 
     password = "".join(password_list)
     password_entry.insert(0, password)
-    pyperclip.copy(password)
+    try:
+        pyperclip.copy(password)
+    except pyperclip.PyperclipException as error:
+        print(error)
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 
@@ -35,11 +39,22 @@ def save_password():
 
     if website and email and password:
         is_ok = messagebox.askokcancel(title=website, message=utils.MESSAGE.format(email, password))
-
+        info_text = {
+            website: {
+                'email': email,
+                'password': password
+            }
+        }
         if is_ok:
-            info_text = utils.FORMAT_PATTERN.format(website, email, password)
-            with open('data.txt', 'a') as file:
-                file.write(info_text)
+            try:
+                with open('data.json', 'r') as data_file:
+                    data = json.load(data_file)
+                    data.update(info_text)
+            except FileNotFoundError:
+                data = info_text
+            finally:
+                with open('data.json', 'w') as file:
+                    json.dump(data, file, indent=4)
             initialize_entries()
     else:
         messagebox.showinfo(title='Oops', message="Please make sure you haven't left any fields empty")
@@ -48,7 +63,16 @@ def save_password():
 
 
 def search_password():
-    pass
+    website = website_entry.get()
+    with open('data.json', 'r') as file:
+        data = json.load(file)
+
+    try:
+        data_website = data[website.title()]
+    except KeyError:
+        messagebox.showinfo(title="Error", message=f"{website} is not found.")
+    else:
+        print(data_website)
 # ---------------------------- UI SETUP ------------------------------- #
 
 
