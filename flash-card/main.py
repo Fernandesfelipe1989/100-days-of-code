@@ -1,4 +1,4 @@
-from random import randint
+from random import choice
 import tkinter as tk
 
 import pandas as pd
@@ -10,17 +10,19 @@ FONT = 'Ariel'
 STUDY_LANGUAGE = "French"
 MOTHER_LANGUAGE = "English"
 
+all_data = []
 
-def selected_word(data: pd.DataFrame) -> tuple:
-    row = randint(0, len(data) - 1)
-    word_info = data.iloc[row].to_dict()
+
+def selected_word() -> tuple:
+    global all_data
+    word_info = choice(all_data)
     language_1, language_2 = word_info.keys()
     word, word_translation = word_info.values()
     return (language_1, language_2), (word, word_translation)
 
 
 def update_canvas_text():
-    languages, word = selected_word(data)
+    languages, word = selected_word()
     canvas.itemconfig(language_text, text=languages[0])
     canvas.itemconfig(word_text, text=word[0])
 
@@ -41,7 +43,8 @@ if __name__ == "__main__":
     except FileNotFoundError:
         raise FileNotFoundError("The data file was not find.")
     else:
-        languages, word = selected_word(data)
+        all_data = data.to_dict(orient='records')
+        languages, word = selected_word()
 
     # ------------------- UI Designer -------------------
     window = tk.Tk()
