@@ -44,6 +44,11 @@ def save_password():
     else:
         messagebox.showinfo(title='Oops', message="Please make sure you haven't left any fields empty")
 
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+
+
+def search_password():
+    pass
 # ---------------------------- UI SETUP ------------------------------- #
 
 
@@ -69,9 +74,9 @@ password_text = tk.Label(text='Password:', bg='white', font=utils.FONT)
 password_text.grid(row=3, column=0, sticky='e')
 
 # Entry Config
-website_entry = tk.Entry(width=45)
+website_entry = tk.Entry(width=25)
 website_entry.focus()
-website_entry.grid(row=1, column=1, columnspan=2, sticky='w')
+website_entry.grid(row=1, column=1, sticky='w')
 
 email_entry = tk.Entry(width=45)
 email_entry.insert(0, utils.DEFAULT_EMAIl)
@@ -87,5 +92,8 @@ password_generate_button.grid(row=3, column=2, sticky='e')
 
 add_button = tk.Button(bg='white', text="Add", command=save_password, width=42)
 add_button.grid(row=4, column=1, columnspan=2, sticky='e')
+
+search_button = tk.Button(bg='white', text='Search', command=search_password, width=15)
+search_button.grid(row=1, column=2, sticky='e')
 
 window.mainloop()
