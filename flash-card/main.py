@@ -5,7 +5,10 @@ import pandas as pd
 
 
 BACKGROUND_COLOR = "#B1DDC6"
+DATA_FILE_PATH = "./data/french_words.csv"
 FONT = 'Ariel'
+STUDY_LANGUAGE = "French"
+MOTHER_LANGUAGE = "English"
 
 
 def selected_word(data: pd.DataFrame) -> tuple:
@@ -24,11 +27,11 @@ def unknown_word_flow():
 
 if __name__ == "__main__":
     try:
-        data = pd.read_csv("./data/french_words.csv")
+        data = pd.read_csv(DATA_FILE_PATH)
     except FileNotFoundError:
         raise FileNotFoundError("The data file was not find.")
     else:
-        french, english = selected_word(data)
+        study_language, mother_language = selected_word(data)
 
     # ------------------- UI Designer -------------------
     window = tk.Tk()
@@ -43,8 +46,8 @@ if __name__ == "__main__":
     canvas.grid(row=0, column=0, columnspan=2)
 
     # Card Front Language text
-    language_text = canvas.create_text(400, 150, text="French", font=(FONT, 40, "italic"))
-    word_text = canvas.create_text(400, 263, text=french, font=(FONT, 60, "bold"))
+    language_text = canvas.create_text(400, 150, text=STUDY_LANGUAGE, font=(FONT, 40, "italic"))
+    word_text = canvas.create_text(400, 263, text=study_language, font=(FONT, 60, "bold"))
 
     # Wrong button
     image_wrong = tk.PhotoImage(file="./images/wrong.png")
