@@ -55,7 +55,7 @@ def save_password():
             finally:
                 with open('data.json', 'w') as file:
                     json.dump(data, file, indent=4)
-            initialize_entries()
+                initialize_entries()
     else:
         messagebox.showinfo(title='Oops', message="Please make sure you haven't left any fields empty")
 
