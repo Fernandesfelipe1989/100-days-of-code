@@ -72,7 +72,8 @@ def search_password():
     except KeyError:
         messagebox.showinfo(title="Error", message=f"{website} is not found.")
     else:
-        print(data_website)
+        message = utils.FORMAT_PATTERN.format(data_website['email'], data_website['password'])
+        messagebox.showinfo(title=website, message=message)
 # ---------------------------- UI SETUP ------------------------------- #
 
 

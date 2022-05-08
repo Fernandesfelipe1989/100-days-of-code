@@ -1,6 +1,6 @@
 FONT = ("Arial", 12, "normal")
 DEFAULT_EMAIl = 'test@gmail.com'
-FORMAT_PATTERN = "{} | {} | {}\n"
+FORMAT_PATTERN = "Email: {}\nPassword: {}"
 MESSAGE = "These are the details entered:\n Email: {}\n Password: {}\nDo you want to save?"
 LETTERS = [
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
