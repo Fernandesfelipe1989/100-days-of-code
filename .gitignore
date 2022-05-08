@@ -161,3 +161,4 @@ cython_debug/
 letter_for*
 states_*
 data.*
+*.zip
