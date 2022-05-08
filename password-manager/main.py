@@ -73,7 +73,7 @@ def search_password():
         try:
             data_website = data[website.title()]
         except KeyError:
-            messagebox.showinfo(title="Error", message=f"{website} is not found.")
+            messagebox.showinfo(title="Error", message=f"The data for this {website} is not found.")
         else:
             message = utils.FORMAT_PATTERN.format(data_website['email'], data_website['password'])
             messagebox.showinfo(title=website, message=message)
