@@ -21,19 +21,19 @@ def selected_word() -> tuple:
     return (language_1, language_2), (word, word_translation)
 
 
-def update_canvas_text():
-    languages, word = selected_word()
-    canvas.itemconfig(language_text, text=languages[0])
-    canvas.itemconfig(word_text, text=word[0])
+def next_card():
+    current_languages, current_word = selected_word()
+    canvas.itemconfig(title_text, text=current_languages[0])
+    canvas.itemconfig(word_text, text=current_word[0])
 
 
 def known_word_flow():
-    update_canvas_text()
+    next_card()
     pass
 
 
 def unknown_word_flow():
-    update_canvas_text()
+    next_card()
     pass
 
 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         raise FileNotFoundError("The data file was not find.")
     else:
         all_data = data.to_dict(orient='records')
-        languages, word = selected_word()
+        title, word = selected_word()
 
     # ------------------- UI Designer -------------------
     window = tk.Tk()
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     canvas.grid(row=0, column=0, columnspan=2)
 
     # Card Front Language text
-    language_text = canvas.create_text(400, 150, text=languages[0], font=(FONT, 40, "italic"))
+    title_text = canvas.create_text(400, 150, text=title[0], font=(FONT, 40, "italic"))
     word_text = canvas.create_text(400, 263, text=word[0], font=(FONT, 60, "bold"))
 
     # Wrong button
