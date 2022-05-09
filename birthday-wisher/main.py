@@ -1,7 +1,7 @@
 import smtplib
 from decouple import config
 
-connect = smtplib.SMTP()
+
 host = config('EMAIL_HOST', default="smtp.mailtrap.io")
 port = config('EMAIL_PORT', default="2525")
 user = config('EMAIL_HOST_USER', default="")
@@ -18,6 +18,9 @@ To: {receiver}
 From: {sender}
 
 This is a test e-mail message."""
-with smtplib.SMTP(host, port) as server:
-    server.login(user, password)
-    server.sendmail(sender, receiver, message)
+connection = smtplib.SMTP(host=host, port=port)
+connection.starttls()
+connection.login(user=user, password=password)
+connection.sendmail(from_addr=sender, to_addrs=receiver, msg=message)
+connection.close()
+
