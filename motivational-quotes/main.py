@@ -1,6 +1,9 @@
 import datetime as dt
+import os
+
 from random import choice
 import smtplib
+
 
 from decouple import config
 
@@ -14,8 +17,8 @@ DAY_WEEK = {
     6: 'Sunday',
 }
 
-
-with open('quotes.txt', 'r') as file:
+path = os.path.dirname(os.path.realpath(__file__))
+with open(f'{path}/quotes.txt', 'r') as file:
     messages = [line for line in file]
 
 host = config('EMAIL_HOST', default="smtp.mailtrap.io")
