@@ -41,13 +41,19 @@ if person_birthday:
 
     letter = letter.replace(PATTERN_MESSAGE, person_birthday['name'])
     message = f"""\
-    Subject: Hi Mailtrap
+    Subject: Happy Birthday
     To: {receiver}
     From: {sender}
 
     {letter}"""
 
     with smtplib.SMTP(host=host, port=port) as server:
+        print(server.ehlo())
         server.starttls()
+        server.ehlo()
         server.login(user=user, password=password)
-        server.sendmail(sender, receiver, letter)
+        server.sendmail(
+            from_addr=sender,
+            to_addrs=receiver,
+            msg=letter
+            )
