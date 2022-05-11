@@ -1,17 +1,12 @@
-from re import sub
+import html
 import requests
 
-PATTERN = r'(?:#039|[^a-zA-Z0-9_* ]|quot)'
-URL_BASE = "https://opentdb.com/api.php?amount=25&type=boolean"
-
-
-def text_filter(text):
-    return sub(PATTERN, "", text, count=100)
+URL_BASE = "https://opentdb.com/api.php?amount=10&type=boolean"
 
 
 response = requests.get(URL_BASE).json()
 data = [data for data in response['results']]
-QUESTIONS_DATA = [{'text': text_filter(information['question']),
+QUESTIONS_DATA = [{'text': html.unescape(information['question']),
                    'answer': information['correct_answer']} for information in data]
 
 
