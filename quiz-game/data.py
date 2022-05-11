@@ -1,10 +1,14 @@
 import html
 import requests
 
-URL_BASE = "https://opentdb.com/api.php?amount=10&type=boolean"
+URL_BASE = "https://opentdb.com/api.php"
 
-
-response = requests.get(URL_BASE).json()
+parameters = {
+    'amount': 10,
+    'type': 'boolean',
+    'category': 18
+}
+response = requests.get(URL_BASE, params=parameters).json()
 data = [data for data in response['results']]
 QUESTIONS_DATA = [{'text': html.unescape(information['question']),
                    'answer': information['correct_answer']} for information in data]

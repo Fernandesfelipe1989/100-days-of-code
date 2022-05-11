@@ -52,6 +52,8 @@ class QuizInterface:
         if self.quiz.still_has_questions():
             self.get_next_question()
         else:
+            self.true_button.config(state='disabled')
+            self.false_button.config(state='disabled')
             self.on_closing()
 
     def change_color(self, user_answer: bool):
