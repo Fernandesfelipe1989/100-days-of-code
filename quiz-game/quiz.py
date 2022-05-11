@@ -10,7 +10,7 @@ class Quiz:
 
     def still_has_questions(self):
         """Checking if we're the end of the quiz"""
-        return self.question_number < len(self.question_list) and not self._next_question()
+        return self.question_number < len(self.question_list) - 1 and not self._next_question()
 
     def _next_question(self):
         self.question_number += 1

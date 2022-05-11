@@ -51,6 +51,8 @@ class QuizInterface:
         self.canvas.config(bg="white")
         if self.quiz.still_has_questions():
             self.get_next_question()
+        else:
+            self.on_closing()
 
     def change_color(self, user_answer: bool):
         if user_answer:
