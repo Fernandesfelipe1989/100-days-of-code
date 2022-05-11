@@ -10,22 +10,24 @@ class QuizInterface:
         self.window.config(padx=20, pady=20, bg=self.THEME_COLOR, width=400, height=400)
 
         # Config Score label
-        self.score = tk.Label(text=f'Score : 0', font=('Arial', 12, 'italic'), fg="white", bg=self.THEME_COLOR)
-        self.score.grid(row=0, column=1, sticky='e')
+        self.score_label = tk.Label(text=f'Score : 0', fg="white", bg=self.THEME_COLOR)
+        self.score_label.grid(row=0, column=1,)
 
         # Config Canvas
-        self.canvas = tk.Canvas(width=250, height=300, bg="white")
-        self.quiz_text = self.canvas.create_text(100, 100, text='Teste', font=('Arial', 20, 'italic'))
-        self.canvas.grid(row=1, column=0, columnspan=2, pady=20, padx=20)
+        self.canvas = tk.Canvas(width=300, height=250, bg="white")
+        self.quiz_text = self.canvas.create_text(
+            300//2, 250//2, text='Teste', font=('Arial', 20, 'italic'), fill=self.THEME_COLOR
+            )
+        self.canvas.grid(row=1, column=0, columnspan=2, pady=50)
 
         # Config True Button
-        self.true_image = tk.PhotoImage(file="./images/true.png")
-        self.true_button = tk.Button(image=self.true_image, border=0, highlightthickness=0)
+        true_image = tk.PhotoImage(file="./images/true.png")
+        self.true_button = tk.Button(image=true_image, highlightthickness=0)
         self.true_button.grid(row=2, column=0)
 
         # Config False Button
-        self.false_image = tk.PhotoImage(file="./images/false.png")
-        self.false_button = tk.Button(image=self.false_image, border=0, highlightthickness=0)
+        false_image = tk.PhotoImage(file="./images/false.png")
+        self.false_button = tk.Button(image=false_image, highlightthickness=0)
         self.false_button.grid(row=2, column=1)
 
         self.window.mainloop()
