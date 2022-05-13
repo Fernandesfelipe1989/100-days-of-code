@@ -1,14 +1,26 @@
 import requests
 
 from decouple import config
+from twilio.rest import Client
 
+
+ACCOUNT_SID = config('TWILIO_ACCOUNT_SID')
+AUTH_TOKEN = config('TWILIO_AUTH_TOKEN')
 API_KEY = config('API_KEY')
 BASE_URL = config('BASE_URL')
+TWILIO_SEND_NUMBER = config("TWILIO_SEND_NUMBER")
+TWILIO_TO_NUMBER = config("TWILIO_TO_NUMBER")
+# LAT = config("LAT", cast=float)
+# LON = config("LON", cast=float)
+LAT = 51.461
+LON = -105.095
+client = Client(ACCOUNT_SID, AUTH_TOKEN)
+
 
 if __name__ == "__main__":
     parameters = {
-        'lat': -23.482050,
-        'lon': -47.414291,
+        'lat': LAT,
+        'lon': LON,
         'appid': API_KEY,
         'exclude': 'minutely,daily'
     }
@@ -21,5 +33,11 @@ if __name__ == "__main__":
         condition_code = weather_info and int(weather_info[0].get('id'))
         will_rain = True if condition_code and condition_code < 700 else False
     if will_rain:
-        print("It's going to rain.")
-
+        pass
+        message = client.messages.create(
+            body="It's going to rain today. Remember to bring an ☂️",
+            from_=TWILIO_SEND_NUMBER,
+            to=TWILIO_TO_NUMBER
+            )
+        print(message.status)
+        print(message.body)

@@ -15,6 +15,7 @@ MarkupSafe==2.1.1
 multidict==6.0.2
 numpy==1.22.3
 pandas==1.4.2
+PyJWT==2.4.0
 pyperclip==1.8.2
 python-dateutil==2.8.2
 python-decouple==3.6
@@ -22,6 +23,7 @@ pytz==2022.1
 replit==3.2.4
 requests==2.27.1
 six==1.16.0
+twilio==7.9.0
 typing-extensions==3.10.0.2
 urllib3==1.26.9
 Werkzeug==2.1.1
