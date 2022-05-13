@@ -15,12 +15,11 @@ if __name__ == "__main__":
     response = requests.get(url=BASE_URL, params=parameters)
     response.raise_for_status()
     weather_data = response.json()
-    print(weather_data)
-    is_rain = False
-    for hourly_weather in weather_data.get("hourly")[7:20]:
+    will_rain = False
+    for hourly_weather in weather_data.get("hourly")[:12]:
         weather_info = hourly_weather.get('weather')
-        if weather_info and weather_info[0].get('id') < 700:
-            is_rain = True
-    if is_rain:
+        condition_code = weather_info and int(weather_info[0].get('id'))
+        will_rain = True if condition_code and condition_code < 700 else False
+    if will_rain:
         print("It's going to rain.")
 
