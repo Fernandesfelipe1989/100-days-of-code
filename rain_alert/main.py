@@ -10,10 +10,9 @@ API_KEY = config('API_KEY')
 BASE_URL = config('BASE_URL')
 TWILIO_SEND_NUMBER = config("TWILIO_SEND_NUMBER")
 TWILIO_TO_NUMBER = config("TWILIO_TO_NUMBER")
-# LAT = config("LAT", cast=float)
-# LON = config("LON", cast=float)
-LAT = 51.461
-LON = -105.095
+LAT = config("LAT", cast=float)
+LON = config("LON", cast=float)
+
 client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
 
