@@ -78,14 +78,17 @@ class StockInformation:
 
     def get_stock_information(self) -> str:
         last_day = 1
-        before_last_day = 2
+
         today = dt.datetime.now().date()
         weekday = today.weekday()
         stock_data = self.get_stock_price()
         if stock_data:
             if weekday == 6:
                 last_day = 2
-                before_last_day = 3
+
+            if weekday == 0:
+                last_day = 3
+            before_last_day = last_day + 1
             stock_yesterday = stock_data['Time Series (Daily)'].get(str(today - dt.timedelta(days=last_day)))
             stock_yesterday_price = float(stock_yesterday['4. close'])
             stock_before_yesterday = stock_data['Time Series (Daily)'].get(
