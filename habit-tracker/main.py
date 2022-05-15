@@ -29,15 +29,24 @@ user_params = {
 #     'color': 'ajisai',
 # }
 # response = requests.post(url=GRAPH_ENDPOINT, json=graphs_params, headers=headers)
-qty = 3.5
+qty = 50
 GRAPHS_ID = 'graph1'
-GRAPH_ENDPOINT = f'{BASE_URL}/{USERNAME}/graphs/{GRAPHS_ID}'
+# GRAPH_ENDPOINT = f'{BASE_URL}/{USERNAME}/graphs/{GRAPHS_ID}'
 headers = {
     'X-USER-TOKEN': TOKEN
 }
-data_graph_parameters = {
-    'date': dt.datetime.today().strftime("%Y%m%d"),
-    'quantity': str(qty),
-}
-response = requests.post(url=GRAPH_ENDPOINT, json=data_graph_parameters, headers=headers)
+day = dt.datetime.today() - dt.timedelta(days=0)
+day = day.strftime("%Y%m%d")
+# data_graph_parameters = {
+#     'date': day,
+#     'quantity': str(qty),
+# }
+# response = requests.post(url=GRAPH_ENDPOINT, json=data_graph_parameters, headers=headers)
+# print(response.text)
+GRAPH_ENDPOINT = f'{BASE_URL}/{USERNAME}/graphs/{GRAPHS_ID}/{day}'
+# data_graph_parameters = {
+#     'quantity': str(qty),
+# }
+# response = requests.put(url=GRAPH_ENDPOINT, json=data_graph_parameters, headers=headers)
+response = requests.delete(url=GRAPH_ENDPOINT, headers=headers)
 print(response.text)
