@@ -1,15 +1,23 @@
-from typing import Union
-
-import requests
 import datetime as dt
+import os
+import requests
+import typing
 
 from decouple import config
+from twilio.rest import Client
+from twilio.http.http_client import TwilioHttpClient
 
 ALPHAVANTAGE_API_KEY = config('ALPHAVANTAGE_API_KEY')
 ALPHAVANTAGE_BASE_URL = config("ALPHAVANTAGE_BASE_URL")
 
 NEWSAPI_API_KEY = config('NEWSAPI_API_KEY')
 NEWSAPI_BASE_URL = config("NEWSAPI_BASE_URL")
+
+TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN')
+TWILIO_SEND_NUMBER = config("TWILIO_SEND_NUMBER")
+TWILIO_TO_NUMBER = config("TWILIO_TO_NUMBER")
+
 COMPANY_NAME = "Tesla Inc"
 STOCK = "TSLA"
 
@@ -18,7 +26,6 @@ STOCK = "TSLA"
 # When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
 
 def get_stock_price(**kwargs) -> requests.Response:
-
     default_parameter = {
         'apikey': ALPHAVANTAGE_API_KEY,
         'symbol': STOCK,
@@ -46,14 +53,15 @@ def get_stock_information():
         stock_before_yesterday_price = float(stock_before_yesterday['4. close'])
         rate_percent = ((stock_yesterday_price - stock_before_yesterday_price) / stock_yesterday_price) * 100
         if rate_percent > 5 or rate_percent < -5:
-            print("Get News")
-            print(get_company_articles(company_name=COMPANY_NAME))
+            articles = get_company_articles(company_name=COMPANY_NAME)
+            body = create_message(company_name=COMPANY_NAME, rate=rate_percent, articles=articles)
+            send_sms(body=body)
+
 
 ## STEP 2: Use https://newsapi.org
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
 
-
-def get_company_information(company_name, **kwargs):
+def get_company_information(company_name: str, **kwargs) -> typing.Union[dict, None]:
     default_parameters = {
         'apiKey': NEWSAPI_API_KEY,
         'q': company_name,
@@ -63,19 +71,37 @@ def get_company_information(company_name, **kwargs):
     parameters = dict(default_parameters, **kwargs)
     response = requests.get(url=NEWSAPI_BASE_URL, params=parameters)
     response.raise_for_status()
-    print(response.json())
     return response and response.json()
 
 
-def get_company_articles(company_name):
+def get_company_articles(company_name: str) -> typing.Union[typing.List[tuple], None]:
     company_name_information = get_company_information(company_name=company_name)
     if company_name_information:
-        company_articles = company_name_information.get('articles')
-        return company_articles and [(article['title'], article['description'])for article in company_articles[:2]]
+        company_articles = company_name_information['articles']
+        return company_articles and [(article['title'], article['description']) for article in company_articles[:3]]
 
 
 ## STEP 3: Use https://www.twilio.com
 # Send a seperate message with the percentage change and each article's title and description to your phone number. 
+
+def create_message(company_name: str, rate: float, articles: list) -> str:
+    company_name = f"{company_name}:" + f"🔺{rate:.0f}%" if rate > 0 else f'🔻{rate:.0f}%'
+    articles = [f"Headline: {article[0]},\n Brief: {article[1]}" for article in articles]
+    message = "\n".join(articles)
+    return "\n".join([company_name, message])
+
+
+def send_sms(body: str):
+    # proxy_client = TwilioHttpClient()
+    # proxy_client.session.proxies = {"https": os.environ['https_proxy']}
+    client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+    message = client.messages.create(
+        body=body,
+        from_=TWILIO_SEND_NUMBER,
+        to=TWILIO_TO_NUMBER
+    )
+    print(message.status)
+    print(message.body)
 
 
 # Optional: Format the SMS message like this:
@@ -90,4 +116,4 @@ Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and 
 """
 
 if __name__ == "__main__":
-    print(get_stock_information())
+    get_stock_information()
