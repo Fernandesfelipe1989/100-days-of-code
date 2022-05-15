@@ -5,9 +5,12 @@ import datetime as dt
 
 from decouple import config
 
-API_KEY = config('API_KEY')
+ALPHAVANTAGE_API_KEY = config('ALPHAVANTAGE_API_KEY')
+ALPHAVANTAGE_BASE_URL = config("ALPHAVANTAGE_BASE_URL")
+
+NEWSAPI_API_KEY = config('NEWSAPI_API_KEY')
+NEWSAPI_BASE_URL = config("NEWSAPI_BASE_URL")
 COMPANY_NAME = "Tesla Inc"
-BASE_URL = config("BASE_URL")
 STOCK = "TSLA"
 
 
@@ -17,12 +20,12 @@ STOCK = "TSLA"
 def get_stock_price(**kwargs) -> requests.Response:
 
     default_parameter = {
-        'apikey': API_KEY,
+        'apikey': ALPHAVANTAGE_API_KEY,
         'symbol': STOCK,
         'function': 'TIME_SERIES_DAILY',
     }
     parameters = dict(default_parameter, **kwargs)
-    response = requests.get(url=BASE_URL, params=parameters)
+    response = requests.get(url=ALPHAVANTAGE_BASE_URL, params=parameters)
     response.raise_for_status()
     return response and response.json()
 
@@ -44,9 +47,32 @@ def get_stock_information():
         rate_percent = ((stock_yesterday_price - stock_before_yesterday_price) / stock_yesterday_price) * 100
         if rate_percent > 5 or rate_percent < -5:
             print("Get News")
+            print(get_company_articles(company_name=COMPANY_NAME))
 
 ## STEP 2: Use https://newsapi.org
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
+
+
+def get_company_information(company_name, **kwargs):
+    default_parameters = {
+        'apiKey': NEWSAPI_API_KEY,
+        'q': company_name,
+        'from': str(dt.date.today()) + '&',
+        'sortBy': 'popularity&',
+    }
+    parameters = dict(default_parameters, **kwargs)
+    response = requests.get(url=NEWSAPI_BASE_URL, params=parameters)
+    response.raise_for_status()
+    print(response.json())
+    return response and response.json()
+
+
+def get_company_articles(company_name):
+    company_name_information = get_company_information(company_name=company_name)
+    if company_name_information:
+        company_articles = company_name_information.get('articles')
+        return company_articles and [(article['title'], article['description'])for article in company_articles[:2]]
+
 
 ## STEP 3: Use https://www.twilio.com
 # Send a seperate message with the percentage change and each article's title and description to your phone number. 
@@ -64,4 +90,4 @@ Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and 
 """
 
 if __name__ == "__main__":
-    print(get_stock_behavior())
+    print(get_stock_information())
