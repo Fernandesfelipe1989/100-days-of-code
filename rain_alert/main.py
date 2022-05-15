@@ -1,7 +1,9 @@
+import os
 import requests
 
 from decouple import config
 from twilio.rest import Client
+from twilio.http.http_client import TwilioHttpClient
 
 
 ACCOUNT_SID = config('TWILIO_ACCOUNT_SID')
@@ -12,8 +14,6 @@ TWILIO_SEND_NUMBER = config("TWILIO_SEND_NUMBER")
 TWILIO_TO_NUMBER = config("TWILIO_TO_NUMBER")
 LAT = config("LAT", cast=float)
 LON = config("LON", cast=float)
-
-client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
 
 if __name__ == "__main__":
@@ -32,7 +32,9 @@ if __name__ == "__main__":
         condition_code = weather_info and int(weather_info[0].get('id'))
         will_rain = True if condition_code and condition_code < 700 else False
     if will_rain:
-        pass
+        proxy_client = TwilioHttpClient()
+        proxy_client.session.proxies = {"https": os.environ['https_proxy']}
+        client = Client(ACCOUNT_SID, AUTH_TOKEN)
         message = client.messages.create(
             body="It's going to rain today. Remember to bring an ☂️",
             from_=TWILIO_SEND_NUMBER,
