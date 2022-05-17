@@ -38,4 +38,3 @@ if __name__ == "__main__":
         }
         response = requests.post(url=SHEET_BASE_URL, json=exercise_parameters, headers=headers_sheet)
         response.raise_for_status()
-        print(response.text)
