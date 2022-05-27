@@ -2,6 +2,7 @@ aiohttp==3.8.1
 aiosignal==1.2.0
 async-timeout==4.0.2
 attrs==21.4.0
+beautifulsoup4==4.11.1
 certifi==2021.10.8
 charset-normalizer==2.0.12
 click==8.1.2
@@ -23,6 +24,8 @@ pytz==2022.1
 replit==3.2.4
 requests==2.27.1
 six==1.16.0
+soupsieve==2.3.2.post1
+spotipy==2.19.0
 twilio==7.9.0
 typing-extensions==3.10.0.2
 urllib3==1.26.9
