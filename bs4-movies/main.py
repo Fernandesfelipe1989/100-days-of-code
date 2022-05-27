@@ -2,21 +2,17 @@ import requests
 
 from bs4 import BeautifulSoup
 
+BASE_URL = "https://web.archive.org/web/20200518073855/https://www.empireonline.com/movies/features/best-movies-2/"
 
-response = requests.get(url="https://news.ycombinator.com/")
+response = requests.get(url=BASE_URL)
 soup = BeautifulSoup(response.text, 'html.parser')
 
-articles = soup.find_all(name="a", class_='titlelink')
-scores = soup.find_all(name="span",  class_='score')
-articles_texts = []
-articles_links = []
-articles_score = []
-for article in articles:
-    articles_texts.append(article.getText())
-    articles_links.append(article.get('href'))
-articles_score = [int(article.getText().split(" ")[0]) for article in scores]
+movies = soup.find_all(name="h3", class_='title')
+movies_title = [movie.getText() for movie in movies]
 
-largest_score = max(articles_score)
-largest_index = articles_score.index(largest_score)
-print(largest_score)
-print(articles_texts[largest_index], articles_links[largest_index])
+with open("movies.txt", 'w') as file:
+    for movie in movies_title[::-1]:
+        file.write(movie)
+        file.write('\n')
+
+print(movies_title)
