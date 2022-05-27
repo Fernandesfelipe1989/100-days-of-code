@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 SUB_PATTERN = r'[\n\t]'
 BASE_URL = 'https://www.billboard.com/charts/hot-100/'
 
-
+SPOTIFY_HEADER = ""
 date = input("Which year do you want to travel to? Type the date in this format YYYY-MM-DD\n")
 
 url = f'{BASE_URL}{date}/'
