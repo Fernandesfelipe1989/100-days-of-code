@@ -1,7 +1,7 @@
 # PRICE TRACKER PROJECT
 
 To create the environment:
-> $ python -m venv .price_tracker
+> $ python -m venv price_tracker/.price_tracker
 
 Install the requirements:
 > (.price_tracker)$ pip install -r requirements
