@@ -3,8 +3,7 @@ from re import sub
 
 from bs4 import BeautifulSoup
 from decouple import config
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
+
 
 SUB_PATTERN = r'[\n\t]'
 BASE_URL = 'https://www.billboard.com/charts/hot-100/'
@@ -38,7 +37,32 @@ access_token = auth_response_data['access_token']
 SPOTIFY_HEADER = {
     'Authorization': 'Bearer {token}'.format(token=access_token)
 }
+TRACK_SEARCH = f'{SPOTIFY_BASE_URL}/search'
+parameters = {
+    'type': 'track',
+    'limit': 1,
+    'q': ""
+}
 
-track_id = '6y0igZArWVi6Iz0rj35c1Y'
+parameters['q'] = top_100_songs[0]
+response_spotify = requests.get(url=TRACK_SEARCH, params=parameters, headers=SPOTIFY_HEADER)
+print(response_spotify.status_code)
+print(response_spotify.text)
+# for song in top_100_songs:
+#     parameters['q'] = song
+#     response = requests.get(url=TRACK_SEARCH, params=parameters)
+#     print(response.status_code)
+#     print(response)
+    # try:
+    #     response.raise_for_status()
+    # except:
+    #     pass
+    # else:
+    #     print(response.json())
 
-r = requests.get(SPOTIFY_BASE_URL + 'audio-features/' + track_id, headers=SPOTIFY_HEADER)
+# CREATE_PLAYLIST = f"{BASE_URL}/users/{SPOTIFY_CLIENT_ID}/playlists"
+# playlist_parameters = {
+#     'name': f"Billboard-{date}",
+# }
+# response = requests.post(CREATE_PLAYLIST, json=playlist_parameters)
+# print(response.text)
