@@ -1,9 +1,10 @@
 import requests
 from re import sub
 
+import spotipy
 from bs4 import BeautifulSoup
 from decouple import config
-
+from spotipy import SpotifyOAuth
 
 SUB_PATTERN = r'[\n\t]'
 BASE_URL = 'https://www.billboard.com/charts/hot-100/'
@@ -37,32 +38,38 @@ access_token = auth_response_data['access_token']
 SPOTIFY_HEADER = {
     'Authorization': 'Bearer {token}'.format(token=access_token)
 }
-TRACK_SEARCH = f'{SPOTIFY_BASE_URL}/search'
+TRACK_SEARCH = f'{SPOTIFY_BASE_URL}search'
 parameters = {
     'type': 'track',
     'limit': 1,
     'q': ""
 }
+top_100_songs_uri = []
+for song in top_100_songs:
+    parameters['q'] = song
+    response = requests.get(url=TRACK_SEARCH, params=parameters, headers=SPOTIFY_HEADER)
+    try:
+        response.raise_for_status()
+    except:
+        pass
+    else:
+        track_info = response.json()
+        track = track_info.get('tracks')
+        track = track and track.get('items')
+        if track:
+            track_uri = track[0].get('uri')
+            top_100_songs_uri.append(track_uri)
 
-parameters['q'] = top_100_songs[0]
-response_spotify = requests.get(url=TRACK_SEARCH, params=parameters, headers=SPOTIFY_HEADER)
-print(response_spotify.status_code)
-print(response_spotify.text)
-# for song in top_100_songs:
-#     parameters['q'] = song
-#     response = requests.get(url=TRACK_SEARCH, params=parameters)
-#     print(response.status_code)
-#     print(response)
-    # try:
-    #     response.raise_for_status()
-    # except:
-    #     pass
-    # else:
-    #     print(response.json())
-
-# CREATE_PLAYLIST = f"{BASE_URL}/users/{SPOTIFY_CLIENT_ID}/playlists"
-# playlist_parameters = {
-#     'name': f"Billboard-{date}",
-# }
-# response = requests.post(CREATE_PLAYLIST, json=playlist_parameters)
-# print(response.text)
+sp = spotipy.Spotify(
+    auth_manager=SpotifyOAuth(
+        scope=SPOTIFY_SCOPES,
+        redirect_uri=REDIRECT_URI,
+        client_id=SPOTIFY_CLIENT_ID,
+        client_secret=SPOTIFY_CLIENT_SECRET,
+        show_dialog=True,
+        cache_path="token.txt"
+    )
+)
+user_id = sp.current_user()["id"]
+playlist = sp.user_playlist_create(user=user_id, name=f"{date} Billboard 100", public=False)
+sp.playlist_add_items(playlist_id=playlist["id"], items=top_100_songs_uri)
