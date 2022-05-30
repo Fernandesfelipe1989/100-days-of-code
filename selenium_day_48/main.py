@@ -1,4 +1,3 @@
-import datetime as dt
 from decouple import config
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
