@@ -3,6 +3,7 @@ from time import sleep
 from decouple import config
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 
@@ -35,6 +36,23 @@ class InstaFollower:
 
     def find_followers(self):
         self.driver.get(url=self.INSTAGRAM_FOLLOW_URL)
+        sleep(10)
+        followers_button_tag = self.driver.find_element(by=By.XPATH, value='/html/body/div[1]/div/div[1]/div/div['
+                                                                        '1]/div/div/div[1]/div['
+                                                                        '1]/section/main/div/header/section/ul/li['
+                                                                        '2]/a')
+        followers_button_tag.click()
+
+        follows_button_tag = self.driver.find_elements(by=By.XPATH, value='/html/body/div[1]/div/div[1]/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div/div/div/div[2]/ul/div/li[1]/div/div[@class="_aaen"]/button')
+        for follow_button in follows_button_tag:
+            try:
+                follow_button.click()
+
+            except NoSuchElementException:
+                print("No follow button, skipped.")
+
+            except Exception as error:
+                print(error)
         sleep(10)
 
     def follow(self):
