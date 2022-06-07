@@ -22,7 +22,16 @@ class InstaFollower:
 
     def login(self):
         self.driver.get(url=self.INSTAGRAM_LOGIN_URL)
-        sleep(10)
+        sleep(5)
+        username_tag = self.driver.find_element(by=By.NAME, value='username')
+        username_tag.send_keys(self.INSTAGRAM_USERNAME)
+
+        password_tag = self.driver.find_element(by=By.NAME, value="password")
+        password_tag.send_keys(self.INSTAGRAM_PASSWORD)
+
+        login_button_tag = self.driver.find_element(by=By.XPATH, value='//*[@id="loginForm"]/div/div[3]/button')
+        login_button_tag.click()
+        sleep(5)
 
     def find_followers(self):
         self.driver.get(url=self.INSTAGRAM_FOLLOW_URL)
