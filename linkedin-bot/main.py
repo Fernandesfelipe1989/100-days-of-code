@@ -43,6 +43,7 @@ if __name__ == "__main__":
     for job_tag in jobs_tags:
         print("called")
     try:
+        # TODO: Improve this part
         print("Entrei no try")
         # JobApplication
         job_tag.click()
