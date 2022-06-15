@@ -1,10 +1,16 @@
 from random import randint
 
 from flask import Flask
+from flask import render_template
 
 app = Flask(__name__)
 
 random_number = None
+
+
+@app.route('/template')
+def template_test():
+    return render_template('index.html')
 
 
 @app.route('/')
