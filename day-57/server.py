@@ -21,7 +21,6 @@ def guess(name):
     if response_age.status_code == 200 and response_gender.status_code == 200:
         data_gender = response_gender and response_gender.json()
         data_age = response_age and response_age.json()
-        print(data_age)
         context = dict(data_gender, **data_age)
     return render_template('guess.html', **context)
 
