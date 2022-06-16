@@ -1,4 +1,4 @@
-from random import randint
+from datetime import datetime as dt
 
 from flask import Flask, render_template
 
@@ -7,8 +7,10 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
+    date = dt.now()
     context = {
-        'num': randint(0, 9)
+        'author': 'Felipe Fernandes',
+        'year': date.year,
     }
     return render_template('index.html', **context)
 
