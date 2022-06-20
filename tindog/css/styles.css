@@ -7,6 +7,11 @@ h1{
   font-weight: 900;
   line-height: 1.5;
 }
+h2{
+  font-weight: 700;
+  font-size: 3rem;
+  line-height: 1.5;
+}
 /* -------------------- Class --------------------  */
  /* Download Buttons */
 .btn-download{
@@ -29,12 +34,9 @@ h1{
   padding: 0 18px;
 }
 
-.container-fluid{
-  padding: 3% 15%;
-}
 /* Title Image */
 .img-rotate{
-  width: 60%;
+  width: 40%;
   transform: rotate(30deg);
 }
  /* Title Features */
@@ -53,12 +55,36 @@ h1{
 .fa-features:hover{
   color: #ff4c68;
 }
+/* Testimonials */
+.testimonial-image{
+  width: 10%;
+  border-radius: 100%;
+  margin: 20px;
+}
+.carousel-item{
+    padding: 7% 15%;
+}
+/* Press */
+.press-logo{
+  width: 15%;
+  margin: 20px 20px 50px;
+}
 /* -------------------- ID --------------------  */
 
-#title {
+#features{
+    padding: 7% 15%;
+    text-align: center;
+}
+#title{
   background-color: #ff4c68;
   color: white;
 }
-#features{
-    text-align: center;
+#testimonials{
+  background-color: #ef8172;
+  color: white;
+  text-align: center;
+}
+#press{
+  background-color: #ef8172;
+  text-align: center;
 }
