@@ -1,15 +1,40 @@
 /* -------------------- Tag --------------------  */
-h1{
+body{
   font-family: 'Montserrat', sans-serif;
-  font-size: 3 rem;
+}
+h1{
+  font-size: 4rem;
   font-weight: 900;
   line-height: 1.5;
 }
 /* -------------------- Class --------------------  */
+ /* Download Buttons */
+.btn-download{
+  margin: 5% 3% 5% 0;
+}
+/* Navigation Bar */
+.navbar{
+  padding: 0 0 2.5rem;
+}
+.navbar-brand{
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 2.5rem;
+}
+.nav-link{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+.nav-item{
+  padding: 0 18px;
+}
+
 .container-fluid{
   padding: 3% 15%;
 }
+/* Title Image */
 .img-rotate{
+  width: 60%;
   transform: rotate(30deg);
 }
 
@@ -17,6 +42,7 @@ h1{
 
 #title {
   background-color: #ff4c68;
+  color: white;
 }
 
 font-family: 'Montserrat', sans-serif;
