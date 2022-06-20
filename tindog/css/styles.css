@@ -1,0 +1,17 @@
+/* -------------------- Tag --------------------  */
+h1{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3 rem;
+  font-weight: 900; 
+  line-height: 1.5;
+}
+/* -------------------- Class --------------------  */
+
+/* -------------------- ID --------------------  */
+
+#title {
+  background-color: #ff4c68;
+}
+
+font-family: 'Montserrat', sans-serif;
+font-family: 'Ubuntu', sans-serif;
