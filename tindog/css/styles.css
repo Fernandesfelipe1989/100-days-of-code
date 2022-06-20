@@ -37,13 +37,29 @@ h1{
   width: 60%;
   transform: rotate(30deg);
 }
-
+ /* Title Features */
+.title-features{
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+.description-features{
+  color: #8f8f8f;
+}
+.fa-features{
+  width: 100%;
+  color:  #ef8172;
+  font-size: 3.5rem;
+}
+.fa-features:hover{
+  color: #ff4c68;
+}
 /* -------------------- ID --------------------  */
 
 #title {
   background-color: #ff4c68;
   color: white;
 }
+#features{
+    text-align: center;
 
-font-family: 'Montserrat', sans-serif;
-font-family: 'Ubuntu', sans-serif;
+}
