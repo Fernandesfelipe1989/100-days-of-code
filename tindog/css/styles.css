@@ -13,13 +13,16 @@ h2{
   line-height: 1.5;
 }
 /* -------------------- Class --------------------  */
+.container-fluid{
+  padding: 7% 15% 7%;
+}
  /* Download Buttons */
 .btn-download{
   margin: 5% 3% 5% 0;
 }
 /* Navigation Bar */
 .navbar{
-  padding: 0 0 2.5rem;
+  padding: 0 15% 0;
 }
 .navbar-brand{
   font-family: 'Ubuntu', sans-serif;
@@ -36,8 +39,9 @@ h2{
 
 /* Title Image */
 .img-rotate{
-  width: 40%;
+  width: 60%;
   transform: rotate(30deg);
+  position: absolute;
 }
  /* Title Features */
 .title-features{
@@ -74,6 +78,9 @@ h2{
 #features{
     padding: 7% 15%;
     text-align: center;
+    background-color: white;
+    position: relative;
+    z-index: 1;
 }
 #title{
   background-color: #ff4c68;
@@ -87,4 +94,7 @@ h2{
 #press{
   background-color: #ef8172;
   text-align: center;
+}
+#pricing{
+  padding: 0 15% 0;
 }
