@@ -6,6 +6,18 @@ app = Flask(__name__)
 post = Post()
 
 
+@app.route('/about')
+def about():
+    context = dict(city='Sorocaba')
+    return render_template("about.html", **context)
+
+
+@app.route('/contact')
+def contact():
+    context = dict(city='Sorocaba')
+    return render_template("contact.html", **context)
+
+
 @app.route("/post/<int:id>")
 def get_post(id):
     context = dict(city='Sorocaba', post=post.get_post(id=id))
