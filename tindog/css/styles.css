@@ -1,21 +1,27 @@
 /* -------------------- Tag --------------------  */
 body{
   font-family: 'Montserrat', sans-serif;
+  text-align: center;
 }
-h1{
-  font-size: 4rem;
+h1, h2, h3, h4, h5, h6{
+  font-family: 'Montserrat', sans-serif;
   font-weight: 900;
-  line-height: 1.5;
 }
-h2{
-  font-weight: 700;
-  font-size: 3rem;
-  line-height: 1.5;
-}
+
 /* -------------------- Class --------------------  */
+/* Container */
 .container-fluid{
-  padding: 7% 10% 7%;
+  padding: 7% 15%;
 }
+/* Config Section  */
+.colored-section{
+    background-color: #ff4c68;
+    color: white;
+}
+.white-section{
+      background-color: white;
+}
+
  /* Download Buttons */
 .btn-download{
   margin: 5% 3% 5% 0;
@@ -36,16 +42,16 @@ h2{
 .nav-item{
   padding: 0 18px;
 }
+ /*  Features  Section */
 
-/* Title Image */
+/*Title Image*/
 .img-rotate{
   width: 60%;
   transform: rotate(30deg);
   position: absolute;
 }
- /* Title Features */
-.title-features{
-  font-weight: 700;
+
+.feature-title{
   font-size: 1.5rem;
 }
 .description-features{
@@ -59,68 +65,78 @@ h2{
 .fa-features:hover{
   color: #ff4c68;
 }
-/* Testimonials */
+/* Testimonials  Section */
 .testimonial-image{
   width: 10%;
   border-radius: 100%;
   margin: 20px;
 }
-.carousel-item{
-    padding: 7% 15%;
+.testimonial-text{
+  font-size: 3rem;
+  line-height: 1.5;
 }
-/* Press */
+
+/* Press  Section */
 .press-logo{
   width: 15%;
   margin: 20px 20px 50px;
 }
-/* CTA */
-.cta-title{
-  font-weight: 900;
-}
-/* Footer */
+/* CTA  Section */
+
+/* Footer  Section */
 .text-footer{
   color: gray;
+}
+
+/* Headings  Section */
+.big-heading{
+  font-size: 4rem;
+  line-height: 1.5;
+}
+.section-heading{
+  font-size: 3rem;
+  line-height: 1.5;
+}
+/* Pricing  Section */
+.card-title{
+  font-size: 3rem;
+  line-height: 1.5;
 }
 /* -------------------- ID --------------------  */
 
 #features{
-    padding: 7% 15%;
-    text-align: center;
-    background-color: white;
+
     position: relative;
     z-index: 1;
 }
+ /* Title Section */
 #title{
-  background-color: #ff4c68;
+
   color: white;
+  text-align: left;
+}
+#title .container-fluid {
+  padding: 1% 15% 7%;
 }
 #testimonials{
   background-color: #ef8172;
-  color: white;
-  text-align: center;
 }
 #press{
   background-color: #ef8172;
-  text-align: center;
 }
 #pricing{
   padding: 0 15% 0;
 }
 #cta{
-  background-color: #ff4c68;
   color: white;
-  padding: 7% 10% 7%;
-  text-align: center;
-
 }
 #footer{
-  background-color: white;
-
-  padding: 7% 10% 7%;
-  text-align: center;
 }
 /* --------------------  Media Query  --------------------*/
 @media (max-width: 1280px) {
+  #title {
+    text-align: center;
+  }
     .img-rotate{
       position: static;
       transform: rotate(0);
