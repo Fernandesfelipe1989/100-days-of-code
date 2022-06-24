@@ -1,9 +1,13 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 from post import Post
 
 app = Flask(__name__)
 post = Post()
+
+
+def send_email(name, email, message):
+    pass
 
 
 @app.route('/about')
@@ -12,8 +16,13 @@ def about():
     return render_template("about.html", **context)
 
 
-@app.route('/contact')
+@app.route('/contact',  methods=['GET', "POST"])
 def contact():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
+        send_email(name=name, email=email, message=message)
     context = dict(city='Sorocaba')
     return render_template("contact.html", **context)
 
