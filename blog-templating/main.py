@@ -40,6 +40,7 @@ def about():
 @app.route('/contact', methods=['GET', "POST"])
 def contact():
     form = ContactForm()
+    message = ""
     if form.validate_on_submit():
         name = form.data['name']
         email = form.data['email']
@@ -47,9 +48,8 @@ def contact():
         text = form.data['message']
         message = make_message(name=name, email=email, phone=phone, subject="Contact", content=text)
         send_email(email=email, message=message)
-        context = dict(city='Sorocaba', form=ContactForm(), message="Success")
-        return render_template("contact.html", **context)
-    context = dict(city='Sorocaba', form=form)
+        message = "Success"
+    context = dict(city='Sorocaba', form=form, message=message)
     return render_template("contact.html", **context)
 
 
