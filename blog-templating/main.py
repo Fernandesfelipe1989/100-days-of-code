@@ -3,11 +3,13 @@ import smtplib
 from decouple import config
 from email.mime.text import MIMEText
 from flask import Flask, render_template, request
-
+from flask_bootstrap import Bootstrap
 
 from post import Post
+from form import ContactForm
 
 app = Flask(__name__)
+Bootstrap(app)
 post = Post()
 
 
@@ -35,16 +37,19 @@ def about():
     return render_template("about.html", **context)
 
 
-@app.route('/contact',  methods=['GET', "POST"])
+@app.route('/contact', methods=['GET', "POST"])
 def contact():
-    if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        phone = request.form['phone']
-        text = request.form['message']
+    form = ContactForm()
+    if form.validate_on_submit():
+        name = form.data['name']
+        email = form.data['email']
+        phone = form.data['phone']
+        text = form.data['message']
         message = make_message(name=name, email=email, phone=phone, subject="Contact", content=text)
         send_email(email=email, message=message)
-    context = dict(city='Sorocaba')
+        context = dict(city='Sorocaba', form=ContactForm(), message="Success")
+        return render_template("contact.html", **context)
+    context = dict(city='Sorocaba', form=form)
     return render_template("contact.html", **context)
 
 
@@ -68,4 +73,9 @@ if __name__ == "__main__":
     password = config("EMAIL_HOST_PASSWORD", default="")
     receiver = config("EMAIl_RECEIVER", default="test@gmail.com")
 
-    app.run(debug=True)
+    app.config.update(
+        DEBUG=config('DEBUG', cast=bool),
+        SECRET_KEY=config('CSRF_SECRET_KEY')
+    )
+
+    app.run()
