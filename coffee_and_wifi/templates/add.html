@@ -1,4 +1,5 @@
-{% extends 'bootstrap/base.html' %}
+{% extends 'index.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}Add A New Cafe{% endblock %}
 
@@ -8,9 +9,19 @@
     <div class="col-sm-12 col-md-8">
 
       <h1>Add a new cafe into the database</h1>
+      <form class="form form-horizontal" method="post" role="form">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_errors(form, hiddens="only") }}
 
-      <!-- This is where your WTForm will go -->
-
+        {{ wtf.form_field(form.cafe) }}
+        {{ wtf.form_field(form.location) }}
+        {{ wtf.form_field(form.open) }}
+        {{ wtf.form_field(form.close) }}
+        {{ wtf.form_field(form.coffee) }}
+        {{ wtf.form_field(form.wifi) }}
+        {{ wtf.form_field(form.power) }}
+        {{ wtf.form_field(form.submit) }}
+      </form>
 	  <p class="space-above"><a href="#">See all cafes</a></p>
 
     </div>
