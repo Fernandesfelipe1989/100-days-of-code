@@ -22,7 +22,6 @@ class CafeForm(FlaskForm):
     coffee = SelectField('Coffee Rating', choices=COFFEE_CHOICES)
     wifi = SelectField('Wifi Rating', choices=WIFI_CHOICES)
     power = SelectField('Power Rating', choices=POWER_CHOICES)
-
     submit = SubmitField('Submit')
 
 
@@ -45,11 +44,11 @@ def add_cafe():
             form.data['wifi'],
             form.data['power'],
         ]
-        # with open('cafe-data.csv', 'w') as csv_file:
-        #     csv_file.writelines(data)
-    # Exercise:
-    # Make the form write a new row into cafe-data.csv
-    # with   if form.validate_on_submit()
+        with open('cafe-data.csv', 'a', newline='') as csv_file:
+            csv_file.write('\n')
+            writer = csv.writer(csv_file)
+            writer.writerow(data)
+
     return render_template('add.html', form=form)
 
 
