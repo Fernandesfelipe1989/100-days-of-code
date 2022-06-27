@@ -1,3 +1,4 @@
+{% import "bootstrap/wtf.html" as wtf %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +6,15 @@
     <title>{{book.title}}</title>
 </head>
 <body>
-<h1>{{book.title}}</h1>
-<h2>{{book.author}}</h2>
-<h2>{{book.rating}}</h2>
+    <form method="post" role="form">
+
+        {{ form.hidden_tag() }}
+        {{ wtf.form_errors(form, hiddens="only") }}
+        {{ wtf.form_field(form.title) }}
+        {{ wtf.form_field(form.author) }}
+        {{ wtf.form_field(form.rating) }}
+        {{ wtf.form_field(form.submit) }}
+    </form>
+    <a class="btn btn-info" href="{{url_for('home')}}">Back</a>
 </body>
 </html>
