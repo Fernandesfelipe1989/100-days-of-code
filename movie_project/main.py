@@ -19,6 +19,7 @@ def create_app():
     app.register_blueprint(bp)
     Bootstrap(app)
     db.init_app(app)
+    # db.create_all()
     return app
 
 
@@ -26,4 +27,5 @@ app = create_app()
 
 
 if __name__ == '__main__':
+    db.create_all(app=create_app())
     app.run()

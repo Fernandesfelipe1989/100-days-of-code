@@ -15,8 +15,29 @@
 <div class="container">
   <h1 class="heading">My Top 10 Movies</h1>
   <p class="description">These are my all time favourite movies.</p>
-   
+
   <div class="card" >
+      {% for movie in movies %}
+          <div class="front" style="background-image: url({{movie.img_url}});">
+                <p class="large">{{movie.ranking}}</p>
+            </div>
+            <div class="back">
+              <div>
+            <div class="title">Drive <span class="release_date">({{movie.year}})</span></div>
+                <div class="rating">
+                    <label>{{movie.rating}}</label>
+                  <i class="fas fa-star star"></i>
+                </div>
+                  <p class="review">{{movie.review}}</p>
+                <p class="overview">
+                    {{movie.description}}
+                </p>
+
+                <a href="{{ulr_for('edit', movie.id)}}" class="button">Update</a>
+                <a href="#" class="button delete-button">Delete</a>
+
+          </div>
+      {% endfor %}
     <div class="front" style="background-image: url('https://www.shortlist.com/media/images/2019/05/the-30-coolest-alternative-movie-posters-ever-2-1556670563-K61a-column-width-inline.jpg');">
         <p class="large">1</p>
     </div>
