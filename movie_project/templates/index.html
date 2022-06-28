@@ -34,7 +34,7 @@
                 </p>
 
                 <a href="{{ url_for('views.edit', id=movie.id) }}" class="button">Update</a>
-                <a href="#" class="button delete-button">Delete</a>
+                <a href="{{ url_for('views.delete', id=movie.id )}}" class="button delete-button">Delete</a>
 
           </div>
       {% endfor %}

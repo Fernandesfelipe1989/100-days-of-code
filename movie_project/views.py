@@ -6,7 +6,7 @@ from flask import render_template, redirect, url_for, request
 
 
 from forms import MovieForm
-from models import MovieModel, db
+from models import db, MovieModel
 
 bp = Blueprint('views', __name__, url_prefix='/')
 
@@ -29,3 +29,12 @@ def edit(id):
         return redirect(url_for("views.edit", id=id))
 
     return render_template('edit.html', form=form, movie=movie)
+
+
+@bp.route("delete/<int:id>", methods=['GET', 'POST'])
+def delete(id):
+    movie = MovieModel.query.filter_by(id=id).first()
+    db.session.delete(movie)
+    db.session.commit()
+    return redirect(url_for("views.home"))
+
