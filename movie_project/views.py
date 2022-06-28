@@ -4,6 +4,7 @@ from flask import render_template, redirect, url_for, request
 
 from forms import MovieAddForm, MovieForm
 from models import db, MovieModel
+from utils import MovieAPI
 
 bp = Blueprint('views', __name__, url_prefix='/')
 
@@ -18,6 +19,12 @@ def home():
 def add():
     form = MovieAddForm()
     if form.is_submitted():
+        title = form.data.get("title")
+        movies = MovieAPI().search_movie(title=title)
+        return render_template('select.html', movies=movies)
+    return render_template('add.html', form=form)
+
+"""
         movie = MovieModel(
             title=form.data.get("title"),
             year=form.data.get("year"),
@@ -29,8 +36,7 @@ def add():
         )
         db.session.add(movie)
         db.session.commit()
-        return redirect(url_for("views.home"))
-    return render_template('add.html', form=form)
+"""
 
 
 @bp.route("delete/<int:id>", methods=['GET', 'POST'])

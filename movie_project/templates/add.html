@@ -17,12 +17,6 @@
         {{ form.hidden_tag() }}
         {{ wtf.form_errors(form, hiddens="only") }}
         {{ wtf.form_field(form.title) }}
-        {{ wtf.form_field(form.year) }}
-        {{ wtf.form_field(form.description) }}
-        {{ wtf.form_field(form.rating) }}
-        {{ wtf.form_field(form.ranking) }}
-        {{ wtf.form_field(form.review) }}
-        {{ wtf.form_field(form.img_url) }}
         {{ wtf.form_field(form.submit)}} <a class="btn btn-info" href="{{url_for('views.home')}}">Back</a>
     </form>
 
