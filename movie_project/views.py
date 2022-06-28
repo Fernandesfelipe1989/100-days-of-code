@@ -17,15 +17,15 @@ def home():
     return render_template("index.html", movies=all_movies)
 
 
-@bp.route("/edit/<int:movie_id>", methods=["GET", "POST"])
-def edit(movie_id):
-    movie = MovieModel.query.filter_by(id=movie_id).first()
+@bp.route("/edit/<int:id>", methods=["GET", "POST"])
+def edit(id):
+    movie = MovieModel.query.filter_by(id=id).first()
     form = MovieForm(rating=movie.rating, review=movie.review)
     if form.is_submitted():
         print("Form submitted")
         movie.rating = form.data.get('rating')
         movie.review = form.data.get('review')
         db.session.commit()
-        return redirect(url_for("views.edit", movie_id=movie_id))
+        return redirect(url_for("views.edit", id=id))
 
     return render_template('edit.html', form=form, movie=movie)
