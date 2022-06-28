@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import FloatField, StringField, SubmitField
 from wtforms.validators import DataRequired
 
 
 class MovieForm(FlaskForm):
-    pass
+    rating = FloatField(label="Rating", validators=[DataRequired(), ])
+    review = StringField(label='Review', validators=[DataRequired(), ])
+    submit = SubmitField(label="Update")

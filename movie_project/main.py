@@ -19,7 +19,6 @@ def create_app():
     app.register_blueprint(bp)
     Bootstrap(app)
     db.init_app(app)
-    # db.create_all()
     return app
 
 

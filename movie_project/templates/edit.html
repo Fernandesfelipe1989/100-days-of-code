@@ -12,7 +12,15 @@
 
 {% block content %}
 <div class="content">
-  <h1 class="heading">Movie Title</h1>
-    <p class="description">Edit Movie Rating</p>
+  <h1 class="heading">{{ movie.title }}</h1>
+  <form class="form form-horizontal" method="post" role="form">
+    {{ form.hidden_tag() }}
+    {{ wtf.form_errors(form, hiddens="only") }}
+    {{ wtf.form_field(form.rating) }}
+    {{ wtf.form_field(form.review) }}
+    {{ wtf.form_field(form.submit)}} <a class="btn btn-info" href="{{url_for('views.home')}}">Back</a>
+  </form>
+  <br>
+
   </div>
 {% endblock %}
