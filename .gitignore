@@ -163,3 +163,4 @@ states_*
 data.*
 *.zip
 token*
+*.db
