@@ -1,81 +1,69 @@
-import smtplib
-
-from decouple import config
-from email.mime.text import MIMEText
-from flask import Flask, render_template, request
+from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired, URL
+from flask_ckeditor import CKEditor, CKEditorField
 
-from post import Post
-from form import ContactForm
+
+## Delete this code:
+# import requests
+# posts = requests.get("https://api.npoint.io/43644ec4f0013682fc0d").json()
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+ckeditor = CKEditor(app)
 Bootstrap(app)
-post = Post()
+
+##CONNECT TO DB
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+##CONFIGURE TABLE
+class BlogPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(250), unique=True, nullable=False)
+    subtitle = db.Column(db.String(250), nullable=False)
+    date = db.Column(db.String(250), nullable=False)
+    body = db.Column(db.Text, nullable=False)
+    author = db.Column(db.String(250), nullable=False)
+    img_url = db.Column(db.String(250), nullable=False)
 
 
-def make_message(name, email, phone, subject, content):
-    message = MIMEText(f"Name: {name.title()}\nEmail:{email}\nPhone: {phone}\nMessage: {content}")
-    message["Subject"] = subject
-    message["From"] = email
-    message["To"] = receiver
-    return message
-
-
-def send_email(email, message):
-    with smtplib.SMTP(host=host, port=port) as server:
-        server.login(user=user, password=password)
-        server.sendmail(
-            from_addr=email,
-            to_addrs=receiver,
-            msg=message.as_string(),
-        )
-
-
-@app.route('/about')
-def about():
-    context = dict(city='Sorocaba')
-    return render_template("about.html", **context)
-
-
-@app.route('/contact', methods=['GET', "POST"])
-def contact():
-    form = ContactForm()
-    message = ""
-    if form.validate_on_submit():
-        name = form.data['name']
-        email = form.data['email']
-        phone = form.data['phone']
-        text = form.data['message']
-        message = make_message(name=name, email=email, phone=phone, subject="Contact", content=text)
-        send_email(email=email, message=message)
-        message = "Success"
-    context = dict(city='Sorocaba', form=form, message=message)
-    return render_template("contact.html", **context)
-
-
-@app.route("/post/<int:id>")
-def get_post(id):
-    context = dict(city='Sorocaba', post=post.get_post(id=id))
-    return render_template('post.html', **context)
+##WTForm
+class CreatePostForm(FlaskForm):
+    title = StringField("Blog Post Title", validators=[DataRequired()])
+    subtitle = StringField("Subtitle", validators=[DataRequired()])
+    author = StringField("Your Name", validators=[DataRequired()])
+    img_url = StringField("Blog Image URL", validators=[DataRequired(), URL()])
+    body = StringField("Blog Content", validators=[DataRequired()])
+    submit = SubmitField("Submit Post")
 
 
 @app.route('/')
-def home():
-    post_data = post.get_posts()
-    context = dict(city='Sorocaba', all_post=post_data)
-    return render_template("index.html", **context)
+def get_all_posts():
+    return render_template("index.html", all_posts=posts)
 
+
+@app.route("/post/<int:index>")
+def show_post(index):
+    requested_post = None
+    for blog_post in posts:
+        if blog_post["id"] == index:
+            requested_post = blog_post
+    return render_template("post.html", post=requested_post)
+
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
 
 if __name__ == "__main__":
-    host = config("EMAIL_HOST", default='smtp.mailtrap.io')
-    port = config("EMAIL_PORT", default=2525)
-    user = config("EMAIL_HOST_USER", default="")
-    password = config("EMAIL_HOST_PASSWORD", default="")
-    receiver = config("EMAIl_RECEIVER", default="test@gmail.com")
-
-    app.config.update(
-        DEBUG=config('DEBUG', cast=bool),
-        SECRET_KEY=config('CSRF_SECRET_KEY')
-    )
-
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
