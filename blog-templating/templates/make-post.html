@@ -1,4 +1,5 @@
 {% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
 {% include "header.html" %}
@@ -20,8 +21,22 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        
-          <!-- This is where the form will go -->
+
+        <form class="form form-horizontal" method="post" role="form">
+          {{ form.hidden_tag() }}
+          {{ wtf.form_errors(form, hiddens="only") }}
+
+          {{ wtf.form_field(form.title) }}
+          {{ wtf.form_field(form.subtitle) }}
+          {{ wtf.form_field(form.author) }}
+          {{ wtf.form_field(form.img_url) }}
+          {{ wtf.form_field(form.body) }}
+          {{ wtf.form_field(form.submit, button_map={"submit": "success"}) }} <a class="btn btn-info" href="{{url_for('get_all_posts')}}">Back</a>
+
+        </form>
+
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='body') }}
 
       </div>
     </div>
