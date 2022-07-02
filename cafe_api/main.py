@@ -45,7 +45,7 @@ def random():
 def get_all_cafes():
     cafes = Cafe.query.all()
     all_cafes = [cafe.to_dict() for cafe in cafes]
-    return jsonify(results=all_cafes) , 200
+    return jsonify(results=all_cafes), 200
 
 
 @app.route("/search", methods=['GET'])
@@ -54,7 +54,7 @@ def search_cafe():
     cafes = Cafe.query.filter_by(location=location).all()
     if cafes:
         match_cafes = [cafe.to_dict() for cafe in cafes]
-        return jsonify(results=match_cafes)
+        return jsonify(results=match_cafes), 200
     return jsonify(error={'Not Found': "Sorry, we don' have a cafe at that location"}), 404
 
 
