@@ -1,9 +1,11 @@
 from datetime import datetime as dt
+from http.client import HTTPException
 
 from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
+from werkzeug.exceptions import NotFound
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, URL
 from flask_ckeditor import CKEditor, CKEditorField
@@ -73,8 +75,13 @@ def add_post():
 
 @app.route("/edit-post/<int:index>", methods=["GET", "POST"])
 def edit_post(index):
-    post = BlogPost.query.filter_by(id=index).first()
-    if post:
+    try:
+        post = BlogPost.query.get_or_404(index)
+
+    except NotFound:
+        return render_template("404.html")
+
+    else:
         form = CreatePostForm(
             title=post.title,
             subtitle=post.subtitle,
@@ -91,7 +98,18 @@ def edit_post(index):
             db.session.commit()
             return redirect(url_for("get_all_posts"))
         return render_template("make-post.html", form=form)
-    return render_template("404.html")
+
+
+@app.route("/delete/<int:index>", methods=["GET"])
+def delete_post(index):
+    try:
+        post = BlogPost.query.get_or_404(index)
+    except NotFound:
+        return render_template("404.html")
+    else:
+        db.session.delete(post)
+        db.session.commit()
+        return redirect(url_for("get_all_posts"))
 
 
 @app.route("/about")

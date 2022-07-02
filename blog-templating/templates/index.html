@@ -31,7 +31,7 @@
           </a>
           <p class="post-meta">Posted by
             <a href="#">{{post.author}}</a>
-            on {{post.date}} <a class="post-delete" href="#">✘</a></p>
+            on {{post.date}} <a class="post-delete" href="{{url_for('delete_post', index=post.id)}}">✘</a></p>
         </div>
         <hr>
         {% endfor %}
