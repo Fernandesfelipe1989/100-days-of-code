@@ -71,6 +71,28 @@ def add_post():
     return render_template("make-post.html", form=form)
 
 
+@app.route("/edit-post/<int:index>", methods=["GET", "POST"])
+def edit_post(index):
+    post = BlogPost.query.filter_by(id=index).first()
+    if post:
+        form = CreatePostForm(
+            title=post.title,
+            subtitle=post.subtitle,
+            author=post.author,
+            body=post.body,
+            img_url=post.img_url,
+        )
+        if form.validate_on_submit():
+            post.title = form.data.get("title")
+            post.subtitle = form.data.get("subtitle")
+            post.author = form.data.get("author")
+            post.body = form.data.get("body")
+            post.img_url = form.data.get("img_url")
+            db.session.commit()
+        return render_template("make-post.html", form=form)
+    return render_template("404.html")
+
+
 @app.route("/about")
 def about():
     return render_template("about.html")
