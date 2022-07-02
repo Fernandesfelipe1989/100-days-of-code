@@ -89,6 +89,7 @@ def edit_post(index):
             post.body = form.data.get("body")
             post.img_url = form.data.get("img_url")
             db.session.commit()
+            return redirect(url_for("get_all_posts"))
         return render_template("make-post.html", form=form)
     return render_template("404.html")
 
