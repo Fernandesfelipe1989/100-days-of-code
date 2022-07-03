@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
@@ -26,8 +26,20 @@ def home():
     return render_template("index.html")
 
 
-@app.route('/register')
+@app.route('/register', methods=["GET", "POST"])
 def register():
+    if request.method == "POST":
+        name = request.form.get('name')
+        email = request.form.get("email")
+        password = request.form.get('password')
+        user = User(
+            name=name,
+            email=email,
+            password=password,
+        )
+        db.session.add(user)
+        db.session.commit()
+        return render_template("secrets.html", user=user)
     return render_template("register.html")
 
 
@@ -48,7 +60,7 @@ def logout():
 
 @app.route('/download')
 def download():
-    pass
+    return send_from_directory('static', filename='files/cheat_sheet.pdf')
 
 
 if __name__ == "__main__":
