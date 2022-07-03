@@ -3,11 +3,17 @@
 
 <div class="box">
     <h1>Login</h1>
+    {% if get_flashed_messages() %}
+    <div class="alert alert-secondary" style="color: red;" role="alert">
+        {{get_flashed_messages()[0]}}
+    </div>
+    {% endif %}
 
     <form action="{{ url_for('login') }}" method="post">
         <input type="text" name="email" placeholder="Email" required="required"/>
         <input type="password" name="password" placeholder="Password" required="required"/>
         <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
+        <input type=hidden value="{{ next or '' }}" name=next>
     </form>
 </div>
 
