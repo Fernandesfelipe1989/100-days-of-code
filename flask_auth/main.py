@@ -48,18 +48,21 @@ def register():
         name = request.form.get('name')
         email = request.form.get("email")
         password = request.form.get('password')
-        user = User(
-            name=name,
-            email=email,
-            password=generate_password_hash(
-                password=password,
-                method="pbkdf2:sha256",
-                salt_length=8,
-            ),
-        )
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for("secrets"))
+        user_exists = User.query.filter_by(email=email).first()
+        if not user_exists:
+            user = User(
+                name=name,
+                email=email,
+                password=generate_password_hash(
+                    password=password,
+                    method="pbkdf2:sha256",
+                    salt_length=8,
+                ),
+            )
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for("secrets"))
+        flash("This email was already used")
     return render_template("register.html")
 
 
@@ -83,15 +86,15 @@ def login():
 @app.route('/secrets')
 @login_required
 def secrets():
-    user_id = session["_user_id"]
-    user = User.query.get_or_404(user_id)
+    user = current_user
     return render_template("secrets.html", user=user)
 
 
 @app.route('/logout')
 @login_required
 def logout():
-    pass
+    logout_user()
+    return redirect(url_for('home'))
 
 
 @app.route('/download')
