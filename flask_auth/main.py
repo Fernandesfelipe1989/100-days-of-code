@@ -61,7 +61,7 @@ def register():
             )
             db.session.add(user)
             db.session.commit()
-            return redirect(url_for("secrets"))
+            return redirect(url_for("home"))
         flash("This email was already used")
     return render_template("register.html")
 
