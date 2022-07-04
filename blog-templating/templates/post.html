@@ -26,10 +26,12 @@
           <p>
             {{post.body|safe}}
           </p>
-           <hr>
-           <div class="clearfix">
-               <a class="btn btn-primary float-right" href="{{url_for('edit_post', index=post.id)}}">Edit Post</a>
-           </div>
+            {% if current_user.id == 1 %}
+               <hr>
+               <div class="clearfix">
+                   <a class="btn btn-primary float-right" href="{{url_for('edit_post', index=post.id)}}">Edit Post</a>
+               </div>
+            {% endif %}
           </div>
       </div>
     </div>

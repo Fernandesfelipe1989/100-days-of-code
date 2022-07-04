@@ -1,6 +1,7 @@
 from datetime import datetime as dt
+from functools import wraps
 
-from flask import flash, Flask, render_template, redirect, url_for
+from flask import abort, flash, Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from flask_sqlalchemy import SQLAlchemy
@@ -31,19 +32,33 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('errors/404.html'), 404
-
-
 @app.errorhandler(401)
 def unauthorized(e):
     return render_template('errors/401.html'), 401
 
 
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template("errors/403.html"), 403
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('errors/404.html'), 404
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get_or_404(user_id)
+
+
+def admin_only(func):
+    @wraps(func)
+    def wrapper_admin_only(*args, **kwargs):
+        if not current_user.id == 1:
+            return abort(403)
+        return func(*args, **kwargs)
+    return wrapper_admin_only
 
 
 ##CONFIGURE TABLE
@@ -89,6 +104,7 @@ def register():
             )
             db.session.add(user)
             db.session.commit()
+            login_user(user)
             return redirect(url_for("get_all_posts"))
         flash("This email was already used")
     return render_template("register.html", form=form)
@@ -122,7 +138,7 @@ def show_post(index):
 
 
 @app.route("/new-post", methods=["GET", "POST"])
-@login_required
+@admin_only
 def add_post():
     form = CreatePostForm()
     if form.validate_on_submit():
@@ -141,7 +157,7 @@ def add_post():
 
 
 @app.route("/edit-post/<int:index>", methods=["GET", "POST"])
-@login_required
+@admin_only
 def edit_post(index):
     post = BlogPost.query.get_or_404(index)
     form = CreatePostForm(
@@ -163,7 +179,7 @@ def edit_post(index):
 
 
 @app.route("/delete/<int:index>", methods=["GET"])
-@login_required
+@admin_only
 def delete_post(index):
     post = BlogPost.query.get_or_404(index)
     db.session.delete(post)

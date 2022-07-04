@@ -31,14 +31,18 @@
           </a>
           <p class="post-meta">Posted by
             <a href="#">{{post.author}}</a>
-            on {{post.date}} <a class="post-delete" href="{{url_for('delete_post', index=post.id)}}">✘</a></p>
+            on {{post.date}}
+            {% if current_user.id == 1 %}
+              <a class="post-delete" href="{{url_for('delete_post', index=post.id)}}">✘</a>
+            {% endif %}
+          </p>
         </div>
         <hr>
         {% endfor %}
 
 
         <!-- New Post -->
-        {% if current_user.is_authenticate %}
+        {% if current_user.id == 1 %}
           <div class="clearfix">
             <a class="btn btn-primary float-right" href="{{url_for('add_post')}}">Create New Post</a>
           </div>
