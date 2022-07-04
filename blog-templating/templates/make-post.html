@@ -34,7 +34,6 @@
 
           {{ wtf.form_field(form.title) }}
           {{ wtf.form_field(form.subtitle) }}
-          {{ wtf.form_field(form.author) }}
           {{ wtf.form_field(form.img_url) }}
           {{ wtf.form_field(form.body) }}
           {{ wtf.form_field(form.submit, button_map={"submit": "success"}) }} <a class="btn btn-info" href="{{url_for('get_all_posts')}}">Back</a>

@@ -68,7 +68,8 @@ class BlogPost(db.Model):
     subtitle = db.Column(db.String(250), nullable=False)
     date = db.Column(db.String(250), nullable=False)
     body = db.Column(db.Text, nullable=False)
-    author = db.Column(db.String(250), nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id',  ondelete="CASCADE"))
+    author = relationship("User", back_populates="posts")
     img_url = db.Column(db.String(250), nullable=False)
 
 
@@ -77,6 +78,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(250), unique=True)
     password = db.Column(db.String(1000))
     name = db.Column(db.String(250))
+    posts = relationship("BlogPost", back_populates="author", cascade="all, delete", passive_deletes=True)
 
 
 @app.route('/', methods=["GET", ])
@@ -117,7 +119,7 @@ def login():
         email = form.data.get("email")
         password = form.data.get("password")
         user = User.query.filter_by(email=email).first()
-        if check_password_hash(pwhash=user.password, password=password):
+        if user and check_password_hash(pwhash=user.password, password=password):
             login_user(user)
             return redirect(url_for('get_all_posts'))
         flash("The user's email and password doesn't match")
@@ -146,7 +148,7 @@ def add_post():
             title=form.data.get("title"),
             subtitle=form.data.get("subtitle"),
             date=dt.now().strftime("%B %d, %Y"),
-            author=form.data.get("author"),
+            author=current_user,
             body=form.data.get("body"),
             img_url=form.data.get("img_url"),
         )
