@@ -31,6 +31,16 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('errors/404.html'), 404
+
+
+@app.errorhandler(401)
+def unauthorized(e):
+    return render_template('errors/401.html'), 401
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get_or_404(user_id)
@@ -67,10 +77,6 @@ def register():
         name = form.data.get('name')
         email = form.data.get("email")
         password = form.data.get("password")
-        print("*"*100)
-        print("Email", email)
-        print("*"*100)
-        print("*"*100)
         if not User.query.filter_by(email=email).first():
             user = User(
                 name=name,
@@ -111,7 +117,7 @@ def logout():
 
 @app.route("/post/<int:index>", methods=["GET", ])
 def show_post(index):
-    requested_post = BlogPost.query.filter_by(id=index).first()
+    requested_post = BlogPost.query.get_or_404(index)
     return render_template("post.html", post=requested_post)
 
 
@@ -137,42 +143,32 @@ def add_post():
 @app.route("/edit-post/<int:index>", methods=["GET", "POST"])
 @login_required
 def edit_post(index):
-    try:
-        post = BlogPost.query.get_or_404(index)
-
-    except NotFound:
-        return render_template("404.html")
-
-    else:
-        form = CreatePostForm(
-            title=post.title,
-            subtitle=post.subtitle,
-            author=post.author,
-            body=post.body,
-            img_url=post.img_url,
-        )
-        if form.validate_on_submit():
-            post.title = form.data.get("title")
-            post.subtitle = form.data.get("subtitle")
-            post.author = form.data.get("author")
-            post.body = form.data.get("body")
-            post.img_url = form.data.get("img_url")
-            db.session.commit()
-            return redirect(url_for("get_all_posts"))
-        return render_template("make-post.html", form=form)
+    post = BlogPost.query.get_or_404(index)
+    form = CreatePostForm(
+        title=post.title,
+        subtitle=post.subtitle,
+        author=post.author,
+        body=post.body,
+        img_url=post.img_url,
+    )
+    if form.validate_on_submit():
+        post.title = form.data.get("title")
+        post.subtitle = form.data.get("subtitle")
+        post.author = form.data.get("author")
+        post.body = form.data.get("body")
+        post.img_url = form.data.get("img_url")
+        db.session.commit()
+        return redirect(url_for("get_all_posts"))
+    return render_template("make-post.html", form=form)
 
 
 @app.route("/delete/<int:index>", methods=["GET"])
 @login_required
 def delete_post(index):
-    try:
-        post = BlogPost.query.get_or_404(index)
-    except NotFound:
-        return render_template("404.html")
-    else:
-        db.session.delete(post)
-        db.session.commit()
-        return redirect(url_for("get_all_posts"))
+    post = BlogPost.query.get_or_404(index)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for("get_all_posts"))
 
 
 @app.route("/about")
