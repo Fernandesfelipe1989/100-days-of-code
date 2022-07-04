@@ -6,11 +6,12 @@ from flask_ckeditor import CKEditorField
 
 
 class CreatePostForm(FlaskForm):
-    title = StringField("Blog Post Title", validators=[DataRequired()])
-    subtitle = StringField("Subtitle", validators=[DataRequired()])
-    img_url = StringField("Blog Image URL", validators=[DataRequired(), URL()])
-    body = CKEditorField("Blog Content", validators=[DataRequired()])
-    submit = SubmitField("Submit Post")
+    title = StringField(label="Blog Post Title", validators=[DataRequired()])
+    subtitle = StringField(label="Subtitle", validators=[DataRequired()])
+    img_url = StringField(label="Blog Image URL", validators=[DataRequired(), URL()])
+    body = CKEditorField(label="Blog Content", validators=[DataRequired()])
+    author = StringField(label="Author", validators=[DataRequired()])
+    submit = SubmitField(label="Submit Post")
 
 
 class ContactForm(FlaskForm):
@@ -18,4 +19,17 @@ class ContactForm(FlaskForm):
     email = StringField(label="Email", validators=[DataRequired(), Email()])
     phone = StringField(label="Phone", validators=[DataRequired()])
     message = CKEditorField(label="Message", validators=[DataRequired()])
-    submit = SubmitField("Submit Post")
+    submit = SubmitField(label="Submit Post")
+
+
+class LoginForm(FlaskForm):
+    email = StringField(label="Email", validators=[DataRequired(), Email()])
+    password = PasswordField(label="Password")
+    submit = SubmitField(label="Login")
+
+
+class RegisterForm(FlaskForm):
+    name = StringField(label="Name", validators=[DataRequired()])
+    email = StringField(label="Email", validators=[DataRequired(), Email()])
+    password = PasswordField(label="Password", validators=[DataRequired()])
+    submit = SubmitField(label="Register")

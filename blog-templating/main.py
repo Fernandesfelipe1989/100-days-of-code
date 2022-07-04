@@ -1,6 +1,6 @@
 from datetime import datetime as dt
 
-from flask import Flask, render_template, redirect, url_for
+from flask import flash, Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from flask_sqlalchemy import SQLAlchemy
@@ -11,7 +11,7 @@ from werkzeug.exceptions import NotFound
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-from forms import CreatePostForm, ContactForm
+from forms import CreatePostForm, ContactForm, LoginForm, RegisterForm
 
 
 app = Flask(__name__)
@@ -22,7 +22,18 @@ Bootstrap(app)
 ##CONNECT TO DB
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+db = SQLAlchemy()
+db.init_app(app)
+
+
+## CONFIG LOGIN
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get_or_404(user_id)
 
 
 ##CONFIGURE TABLE
@@ -36,24 +47,65 @@ class BlogPost(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
 
 
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(250), unique=True)
+    password = db.Column(db.String(1000))
+    name = db.Column(db.String(250))
+
+
 @app.route('/', methods=["GET", ])
 def get_all_posts():
     posts = BlogPost.query.all()
     return render_template("index.html", all_posts=posts)
 
 
-@app.route('/register')
+@app.route('/register', methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    form = RegisterForm()
+    if form.is_submitted():
+        name = form.data.get('name')
+        email = form.data.get("email")
+        password = form.data.get("password")
+        print("*"*100)
+        print("Email", email)
+        print("*"*100)
+        print("*"*100)
+        if not User.query.filter_by(email=email).first():
+            user = User(
+                name=name,
+                email=email,
+                password=generate_password_hash(
+                    password=password,
+                    method='pbkdf2:sha256',
+                    salt_length=8,
+                ),
+            )
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for("get_all_posts"))
+        flash("This email was already used")
+    return render_template("register.html", form=form)
 
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.data.get("email")
+        password = form.data.get("password")
+        user = User.query.filter_by(email=email).first()
+        if check_password_hash(pwhash=user.password, password=password):
+            login_user(user)
+            return redirect(url_for('get_all_posts'))
+        flash("The user's email and password doesn't match")
+    return render_template("login.html", form=form)
 
 
 @app.route('/logout')
+@login_required
 def logout():
+    logout_user()
     return redirect(url_for('get_all_posts'))
 
 
@@ -64,6 +116,7 @@ def show_post(index):
 
 
 @app.route("/new-post", methods=["GET", "POST"])
+@login_required
 def add_post():
     form = CreatePostForm()
     if form.validate_on_submit():
@@ -82,6 +135,7 @@ def add_post():
 
 
 @app.route("/edit-post/<int:index>", methods=["GET", "POST"])
+@login_required
 def edit_post(index):
     try:
         post = BlogPost.query.get_or_404(index)
@@ -109,6 +163,7 @@ def edit_post(index):
 
 
 @app.route("/delete/<int:index>", methods=["GET"])
+@login_required
 def delete_post(index):
     try:
         post = BlogPost.query.get_or_404(index)
@@ -132,4 +187,5 @@ def contact():
 
 
 if __name__ == "__main__":
+    db.create_all(app=app)
     app.run(host='0.0.0.0', port=5000)
