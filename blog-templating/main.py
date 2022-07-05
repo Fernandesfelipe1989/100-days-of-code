@@ -49,7 +49,7 @@ def page_not_found(e):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get_or_404(user_id)
+    return User.query.filter_by(id=user_id).first()
 
 
 def admin_only(func):
@@ -61,24 +61,41 @@ def admin_only(func):
     return wrapper_admin_only
 
 
-##CONFIGURE TABLE
-class BlogPost(db.Model):
+class User(UserMixin, db.Model):
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
+    name = db.Column(db.String(100))
+    posts = relationship("BlogPost", back_populates="author")
+    comments = relationship("Comment", back_populates="comment_author")
+
+
+class BlogPost(db.Model):
+    __tablename__ = "blog_posts"
+    id = db.Column(db.Integer, primary_key=True)
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    author = relationship("User", back_populates="posts")
     title = db.Column(db.String(250), unique=True, nullable=False)
     subtitle = db.Column(db.String(250), nullable=False)
     date = db.Column(db.String(250), nullable=False)
     body = db.Column(db.Text, nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id',  ondelete="CASCADE"))
-    author = relationship("User", back_populates="posts")
     img_url = db.Column(db.String(250), nullable=False)
 
+    # ***************Parent Relationship*************#
+    comments = relationship("Comment", back_populates="parent_post")
 
-class User(UserMixin, db.Model):
+
+class Comment(db.Model):
+    __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(250), unique=True)
-    password = db.Column(db.String(1000))
-    name = db.Column(db.String(250))
-    posts = relationship("BlogPost", back_populates="author", cascade="all, delete", passive_deletes=True)
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    comment_author = relationship("User", back_populates="comments")
+
+    # ***************Child Relationship*************#
+    post_id = db.Column(db.Integer, db.ForeignKey("blog_posts.id"))
+    parent_post = relationship("BlogPost", back_populates="comments")
+    text = db.Column(db.Text, nullable=False)
 
 
 @app.route('/', methods=["GET", ])
@@ -195,11 +212,14 @@ def about():
 
 
 # TODO Create the contact flow
-@app.route("/contact")
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html")
+    form = ContactForm()
+    if form.validate_on_submit():
+        flash("Successfully, The email was send")
+    return render_template("contact.html", form=form)
 
 
 if __name__ == "__main__":
     db.create_all(app=app)
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
