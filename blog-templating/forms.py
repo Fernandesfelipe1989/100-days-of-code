@@ -13,6 +13,11 @@ class CreatePostForm(FlaskForm):
     submit = SubmitField(label="Submit Post")
 
 
+class CommentForm(FlaskForm):
+    text = CKEditorField(label="Comment", validators=[DataRequired()])
+    submit = SubmitField(label="Comment")
+
+
 class ContactForm(FlaskForm):
     name = StringField(label="Name", validators=[DataRequired()])
     email = StringField(label="Email", validators=[DataRequired(), Email()])

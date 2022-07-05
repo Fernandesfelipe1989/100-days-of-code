@@ -12,7 +12,7 @@ from werkzeug.exceptions import NotFound
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-from forms import CreatePostForm, ContactForm, LoginForm, RegisterForm
+from forms import CreatePostForm, ContactForm, CommentForm, LoginForm, RegisterForm
 
 
 app = Flask(__name__)
@@ -30,6 +30,15 @@ db.init_app(app)
 ## CONFIG LOGIN
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+gravatar = Gravatar(app,
+                    size=100,
+                    rating='g',
+                    default='retro',
+                    force_default=False,
+                    force_lower=False,
+                    use_ssl=False,
+                    base_url=None)
 
 
 @app.errorhandler(401)
@@ -61,41 +70,43 @@ def admin_only(func):
     return wrapper_admin_only
 
 
-class User(UserMixin, db.Model):
-    __tablename__ = "users"
+class Comment(db.Model):
+    __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(100))
-    name = db.Column(db.String(100))
-    posts = relationship("BlogPost", back_populates="author")
-    comments = relationship("Comment", back_populates="comment_author")
+    text = db.Column(db.String(1000))
+
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    comment_author = relationship("User", back_populates="comments")
+
+    post_id = db.Column(db.Integer, db.ForeignKey('blog_posts.id', ondelete="CASCADE"))
+    parent_post = relationship("BlogPost", back_populates="comments")
 
 
+##CONFIGURE TABLE
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"
     id = db.Column(db.Integer, primary_key=True)
-    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    author = relationship("User", back_populates="posts")
     title = db.Column(db.String(250), unique=True, nullable=False)
     subtitle = db.Column(db.String(250), nullable=False)
     date = db.Column(db.String(250), nullable=False)
     body = db.Column(db.Text, nullable=False)
     img_url = db.Column(db.String(250), nullable=False)
 
-    # ***************Parent Relationship*************#
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id',  ondelete="CASCADE"))
+    author = relationship("User", back_populates="posts")
+
     comments = relationship("Comment", back_populates="parent_post")
 
 
-class Comment(db.Model):
-    __tablename__ = "comments"
+class User(UserMixin, db.Model):
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    comment_author = relationship("User", back_populates="comments")
+    email = db.Column(db.String(250), unique=True)
+    password = db.Column(db.String(1000))
+    name = db.Column(db.String(250))
 
-    # ***************Child Relationship*************#
-    post_id = db.Column(db.Integer, db.ForeignKey("blog_posts.id"))
-    parent_post = relationship("BlogPost", back_populates="comments")
-    text = db.Column(db.Text, nullable=False)
+    posts = relationship("BlogPost", back_populates="author", cascade="all, delete", passive_deletes=True)
+    comments = relationship("Comment", back_populates="comment_author", cascade="all, delete", passive_deletes=True)
 
 
 @app.route('/', methods=["GET", ])
@@ -150,10 +161,24 @@ def logout():
     return redirect(url_for('get_all_posts'))
 
 
-@app.route("/post/<int:index>", methods=["GET", ])
+@app.route("/post/<int:index>", methods=["GET", "POST"])
 def show_post(index):
     requested_post = BlogPost.query.get_or_404(index)
-    return render_template("post.html", post=requested_post)
+    form = CommentForm()
+    if form.is_submitted():
+        if current_user.is_authenticated:
+            user = current_user
+            comment = Comment(
+                comment_author=user,
+                parent_post=requested_post,
+                text=form.data.get("text")
+            )
+            db.session.add(comment)
+            db.session.commit()
+            flash("Success, Your comment was save.")
+        flash("You need to login or register to comment a post")
+        return redirect(url_for('login'))
+    return render_template("post.html", post=requested_post, form=form)
 
 
 @app.route("/new-post", methods=["GET", "POST"])

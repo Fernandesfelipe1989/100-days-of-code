@@ -1,3 +1,8 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block content %}
 {% include "header.html" %}
 
 <!-- Page Header -->
@@ -23,19 +28,51 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{% if 'Success' in message %}success{% else %}danger{% endif %}" role="alert">
+                            {{message}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
           <p>
             {{post.body|safe}}
           </p>
+
             {% if current_user.id == 1 %}
                <hr>
                <div class="clearfix">
                    <a class="btn btn-primary float-right" href="{{url_for('edit_post', index=post.id)}}">Edit Post</a>
                </div>
+            {% else %}
+            {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "success"}) }}
+
+            {{ ckeditor.load() }}
+            {{ ckeditor.config(name='text') }}
             {% endif %}
-          </div>
+
+           <div class="col-lg-8 col-md-10 mx-auto comment">
+
+                        {% for comment in post.comments: %}
+                            <div class="card border-light mb-3">
+                              <div class="card-header"><img  class="img-thumbnail" src="{{ comment.comment_author.email | gravatar}}"/></div>
+                              <div class="card-body">
+                                <h5 class="card-title">{{comment.comment_author.name}}</h5>
+                                <p class="card-text">{{comment.text|safe}}</p>
+                              </div>
+                            </div>
+                        {% endfor %}
+                    </ul>
+
+            </div>
+        </div>
+
       </div>
     </div>
   </article>
 
   <hr>
 {% include "footer.html" %}
+{% endblock content %}
