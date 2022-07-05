@@ -1,6 +1,7 @@
 from datetime import datetime as dt
 from functools import wraps
 
+from decouple import config
 from flask import abort, flash, Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
@@ -8,7 +9,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from flask_gravatar import Gravatar
 from sqlalchemy.orm import relationship
-from werkzeug.exceptions import NotFound
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -16,13 +16,14 @@ from forms import CreatePostForm, ContactForm, CommentForm, LoginForm, RegisterF
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = config('SECRET_KEY')
+app.config["DEBUG"] = config("DEBUG")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
 ##CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = config('SQLALCHEMY_DATABASE_URI')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config('SQLALCHEMY_TRACK_MODIFICATIONS')
 db = SQLAlchemy()
 db.init_app(app)
 
@@ -247,4 +248,4 @@ def contact():
 
 if __name__ == "__main__":
     db.create_all(app=app)
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run()
