@@ -164,3 +164,4 @@ data.*
 *.zip
 token*
 *.db
+.DS_Store
