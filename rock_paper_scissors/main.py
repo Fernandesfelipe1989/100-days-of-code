@@ -19,9 +19,15 @@ class RockPaperScissorSimulator:
         }
     }
 
-    def __init__(self, human_choice):
-        self.user_choice = human_choice
+    def __init__(self):
         self.computer_option = choice(self.OPTIONS)
+
+    def get_user_choice(self):
+        user_option = input(f"What do you choose? Type {self.show_the_game_options()}\n")
+        self.user_choice = user_option
+
+    def show_the_game_options(self) -> str:
+        return ", ".join([f'{option}' for option in self.OPTIONS])
 
     def result_game(self) -> str:
         first_option = f"User choose: \n{images_options.get(self.user_choice, '')}\n"
@@ -48,6 +54,6 @@ class RockPaperScissorSimulator:
 
 
 if __name__ == "__main__":
-    user_option = input("What do you choose? Type rock, paper or scissors\n")
-    game = RockPaperScissorSimulator(human_choice=user_option)
+    game = RockPaperScissorSimulator()
+    game.get_user_choice()
     print(game.play_game())
