@@ -2,30 +2,52 @@ from random import choice
 from utils import conditions, images_options, options
 
 
-def print_result_game(first: str, second: str) -> str:
-    first_option = f"User choose: \n{images_options.get(first, '')}\n"
-    second_option = f"Computer choose: \n{images_options.get(second, '')}\n"
-    return first_option + second_option
+class RockPaperScissorSimulator:
+    OPTIONS = ('rock', 'paper', 'scissors')
+    CONDITIONS = {
+        'paper': {
+            'win': 'rock',
+            'lose': 'scissors',
+        },
+        'rock': {
+            'win': 'scissors',
+            'lose': 'paper',
+        },
+        'scissors': {
+            'win': 'paper',
+            'lose': 'rock',
+        }
+    }
 
+    def __init__(self, human_choice):
+        self.user_choice = human_choice
+        self.computer_option = choice(self.OPTIONS)
 
-def choose_winner(user: str, computer: str) -> str:
-    result = "Draw"
-    condition = conditions.get(user, None)
-    if not condition:
-        return "Invalid option"
-    if condition['win'] == computer:
-        result = "You Win"
-    if condition['lose'] == computer:
-        result = "You lose"
-    return result
+    def result_game(self) -> str:
+        first_option = f"User choose: \n{images_options.get(self.user_choice, '')}\n"
+        second_option = f"Computer choose: \n{images_options.get(self.computer_option , '')}\n"
+        return first_option + second_option
 
+    def choose_winner(self) -> str:
+        condition = conditions.get(self.user_choice, None)
+        return self.conditions_to_win(condition)
 
-def play_game(user: str) -> str:
-    computer_option = choice(options)
-    game_winner = choose_winner(user, computer_option)
-    return print_result_game(user, computer_option) + game_winner
+    def conditions_to_win(self, condition):
+        result = "Draw"
+        if not condition:
+            return "Invalid option"
+        if condition['win'] == self.computer_option:
+            result = "You Win"
+        if condition['lose'] == self.computer_option:
+            result = "You lose"
+        return result
+
+    def play_game(self) -> str:
+        game_winner = self.choose_winner()
+        return self.result_game() + game_winner
 
 
 if __name__ == "__main__":
     user_option = input("What do you choose? Type rock, paper or scissors\n")
-    print(play_game(user_option))
+    game = RockPaperScissorSimulator(human_choice=user_option)
+    print(game.play_game())
